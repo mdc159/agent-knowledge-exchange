@@ -1,0 +1,32 @@
+name: Backup Milestone
+description: Record a milestone snapshot for an important agent.
+title: "[backup] "
+labels:
+  - backup
+  - needs-review
+body:
+  - type: input
+    id: agent
+    attributes:
+      label: Agent name
+    validations:
+      required: true
+  - type: input
+    id: milestone
+    attributes:
+      label: Milestone name
+      description: Use YYYY-MM-DD-short-name
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Included files
+      description: List the curated files and summaries included in the snapshot.
+    validations:
+      required: true
+  - type: textarea
+    id: restore
+    attributes:
+      label: Restore notes
+      description: What would another operator need to restore this snapshot?

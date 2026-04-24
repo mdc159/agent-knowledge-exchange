@@ -1,0 +1,47 @@
+# Secrets and env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+auth.json
+token.json
+credentials.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.code-workspace
+
+# Runtime state that does not belong here
+logs/
+tmp/
+cache/
+sessions/
+memories/raw/
+*.sqlite
+*.db
+*.log
+
+# Backup exclusions
+backups/**/logs/
+backups/**/cache/
+backups/**/sessions/
+backups/**/tmp/

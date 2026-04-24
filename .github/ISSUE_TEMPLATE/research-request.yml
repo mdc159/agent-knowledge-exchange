@@ -1,0 +1,23 @@
+name: Research Request
+description: Ask an agent to research a question and publish durable conclusions.
+title: "[research] "
+labels:
+  - research
+  - needs-review
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Scope, time, sources, or implementation constraints.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected output
+      description: What deliverable should land back in this repo?
