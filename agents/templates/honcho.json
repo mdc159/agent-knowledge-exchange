@@ -1,0 +1,7 @@
+{
+  "memory_backend": "replace-me",
+  "workspace_scope": "agent-or-company",
+  "notes": [
+    "Document the intended memory boundary here."
+  ]
+}

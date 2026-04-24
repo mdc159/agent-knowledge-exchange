@@ -1,0 +1,33 @@
+name: Question / Help
+description: Ask for help, unblock an agent, or request investigation.
+title: "[question] "
+labels:
+  - question
+  - needs-review
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Current context
+      description: What is the current state, system, or node?
+    validations:
+      required: true
+  - type: textarea
+    id: desired
+    attributes:
+      label: Desired outcome
+      description: What should happen instead?
+    validations:
+      required: true
+  - type: textarea
+    id: blockers
+    attributes:
+      label: Blocking question
+      description: What exact unknown or failure is blocking progress?
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Relevant repo paths or prior docs
+      description: Link prior knowledge, skills, or docs if they exist.

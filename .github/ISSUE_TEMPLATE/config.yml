@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Repository Policy
+    url: ./docs/repo-policy.md
+    about: Read the repo policy before opening an issue that includes backups or sensitive runtime context.

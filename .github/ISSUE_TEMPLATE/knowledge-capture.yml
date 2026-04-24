@@ -1,0 +1,26 @@
+name: Knowledge Capture
+description: Record a piece of reusable operational knowledge or research.
+title: "[knowledge] "
+labels:
+  - knowledge
+  - needs-review
+body:
+  - type: textarea
+    id: source
+    attributes:
+      label: Source of knowledge
+      description: What run, experiment, conversation, or incident produced this?
+    validations:
+      required: true
+  - type: textarea
+    id: reusable
+    attributes:
+      label: Reusable conclusion
+      description: What should future agents/operators be able to reuse?
+    validations:
+      required: true
+  - type: textarea
+    id: target
+    attributes:
+      label: Suggested target path
+      description: Where should this land in the repo?

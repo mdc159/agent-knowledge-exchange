@@ -1,0 +1,10 @@
+default_model: provider/model-name
+provider: provider-name
+base_url: https://example.invalid/api
+
+runtime:
+  type: local
+  memory_mode: isolated
+
+notes:
+  - replace these placeholder values before use
