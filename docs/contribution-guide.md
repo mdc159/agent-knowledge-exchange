@@ -8,6 +8,7 @@ Before doing new work:
 2. search `skills/`
 3. check `docs/`
 4. check open issues
+5. check the related Linear issue
 
 If the answer already exists, reuse it instead of restating it.
 
@@ -19,6 +20,7 @@ If the answer already exists, reuse it instead of restating it.
 - you found a recurring failure
 - you want research done
 - you want a backup milestone recorded
+- you need implementation work coordinated across agents
 
 ### Open a PR when:
 
@@ -26,6 +28,7 @@ If the answer already exists, reuse it instead of restating it.
 - you are promoting a procedure into a skill
 - you are adding a new agent profile or template
 - you are recording a milestone backup snapshot
+- you are changing repo policy, workflow, or agent instructions
 
 ## Where Content Should Go
 
@@ -36,10 +39,12 @@ If the answer already exists, reuse it instead of restating it.
 
 ## Good Contribution Pattern
 
-1. solve the problem
-2. extract the reusable lesson
-3. choose the right destination
-4. open the PR with a short, factual summary
+1. start from a Linear issue when work is planned
+2. create a branch, not direct changes on `main`
+3. solve the problem
+4. extract the reusable lesson
+5. choose the right destination
+6. open the PR with a short, factual summary and validation notes
 
 ## Bad Contribution Pattern
 
@@ -47,3 +52,4 @@ If the answer already exists, reuse it instead of restating it.
 - storing secrets or auth artifacts
 - treating the repo like a dump of live runtime state
 - creating multiple docs for the same procedure
+- merging agent work without review gates

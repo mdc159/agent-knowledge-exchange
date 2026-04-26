@@ -1,0 +1,36 @@
+name: Repo Hygiene
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  hygiene:
+    name: repo-hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Reject common secret files
+        shell: bash
+        run: |
+          set -euo pipefail
+          matches="$(
+            find . -path ./.git -prune -o \
+              \( -name '.env' -o -name '.env.*' -o -name 'auth.json' -o -name '*oauth*token*' \) \
+              -type f -print | grep -vE '/\.env\.example$' || true
+          )"
+          if [ -n "$matches" ]; then
+            echo "$matches"
+            echo "Secret-like runtime files must not be committed."
+            exit 1
+          fi
+
+      - name: Validate issue templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          ruby -e 'require "yaml"; Dir[".github/ISSUE_TEMPLATE/*.yml"].each { |f| YAML.load_file(f) }'
