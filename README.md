@@ -17,6 +17,7 @@ This repo is not for:
 
 Start here:
 
+- [docs/agent-operating-procedure.md](docs/agent-operating-procedure.md)
 - [docs/repo-policy.md](docs/repo-policy.md)
 - [docs/contribution-guide.md](docs/contribution-guide.md)
 - [docs/backup-policy.md](docs/backup-policy.md)
@@ -34,8 +35,9 @@ Core layout:
 
 Default working rules:
 
-1. Read existing docs before reinventing a process.
-2. Open an issue for questions, requests, and coordination.
-3. Use branches and pull requests for substantive changes.
-4. Promote repeated successful procedures into `knowledge/` or `skills/`.
-5. Snapshot agents only on milestones, not continuously.
+1. Read the agent operating procedure before coordinating planned work.
+2. Start planned work from Linear.
+3. Open an issue for questions, requests, and coordination.
+4. Use branches and pull requests for substantive changes.
+5. Promote repeated successful procedures into `knowledge/` or `skills/`.
+6. Snapshot agents only on milestones, not continuously.

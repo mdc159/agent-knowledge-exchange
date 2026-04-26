@@ -1,0 +1,31 @@
+name: Auto Merge Gate
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - ready_for_review
+      - reopened
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable-automerge:
+    name: enable-automerge
+    if: >
+      contains(github.event.pull_request.labels.*.name, 'automerge') &&
+      contains(github.event.pull_request.labels.*.name, 'low-risk') &&
+      !contains(github.event.pull_request.labels.*.name, 'no-automerge') &&
+      github.event.pull_request.state == 'open' &&
+      github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable GitHub auto-merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge "$PR_URL" --auto --squash --delete-branch
