@@ -1,7 +1,8 @@
 # Paperclip Company Setup
 
-This note captures the practical lessons from observed Paperclip company setups
-and the first runtime inspection work done against a live Paperclip VPS.
+This note captures the practical lessons from observed Paperclip company setups,
+live runtime inspection work, and repeated fresh-node `hermes_local` proofs on
+`srv1264451`.
 
 ## What Paperclip Actually Owns
 
@@ -40,6 +41,22 @@ The CEO agent configured as `hermes_local` failed because the Paperclip runtime
 could not resolve `hermes` on `PATH`, even though Hermes existed on the host in
 `/root/.local/bin/hermes`.
 
+## Fresh-Node Proof Status
+
+Fresh-node `hermes_local` proofs later succeeded twice on `srv1264451`, first
+for `HER-1` and then again for `HERA-1` with a different company and agent.
+
+What the repeated proofs established:
+
+- `hermes_local` works on a fresh node when Paperclip installs Hermes inside its
+  execution environment
+- isolated per-company `HERMES_HOME` works and was confirmed by agent-authored
+  comments along with the expected `config.yaml`
+- the assignment wake path works through the normal heartbeat adapter execution
+  path
+- API-persisted `adapterConfig.env.HERMES_HOME` binding objects succeed once
+  Paperclip passes resolved runtime config into the adapter
+
 ## Operational Lesson
 
 If Paperclip is expected to run `hermes_local`, one of these must be true:
@@ -48,6 +65,24 @@ If Paperclip is expected to run `hermes_local`, one of these must be true:
 2. a supported wrapper/gateway layer is implemented and documented
 
 Do not assume host installation alone is enough.
+
+## Critical Adapter Contract
+
+For the proven `hermes_local` path to keep working:
+
+- the Paperclip image must install Hermes inside the execution environment
+- both the Hermes launcher and its Python interpreter must be executable by the
+  Paperclip runtime user
+- company Hermes-home preparation must `chown` the company tree to the
+  Paperclip runtime UID/GID
+- Paperclip must pass resolved adapter config and env values into local
+  adapters; unresolved binding objects such as `[object Object]` are invalid
+- assignment wakes must surface `taskId`, `taskTitle`, `taskBody`, `commentId`,
+  and `wakeReason` into adapter config because `hermes-paperclip-adapter`
+  builds its default prompt from `ctx.config`
+
+If the assignment wake fields are omitted, the adapter can degrade into its
+no-task heartbeat branch.
 
 ## Company-Scoped Isolation
 
@@ -68,8 +103,11 @@ When creating a Paperclip company:
 1. create the company and org roles in Paperclip
 2. assign adapter types deliberately
 3. verify each required local runtime exists where Paperclip can execute it
-4. set company-scoped homes for runtimes that accumulate memory or state
-5. pin important models for approval-bearing roles
+4. set company-scoped homes for runtimes that accumulate memory or state and
+   ensure the Paperclip runtime user owns those trees
+5. verify local adapters receive resolved config/env values plus assignment-wake
+   task metadata when they build prompts from runtime config
+6. pin important models for approval-bearing roles
 
 ## Known Failure Modes
 
@@ -78,4 +116,10 @@ When creating a Paperclip company:
   Paperclip execution environment
 - `hermes_local` accidentally points at outer Hermes state instead of a
   company-local runtime home
+- company-scoped Hermes state exists, but ownership prevents the Paperclip
+  runtime user from executing or writing inside it
+- Paperclip passes unresolved binding objects such as `[object Object]` into a
+  local adapter instead of resolved config/env values
+- assignment wakes omit task fields from adapter config, so the adapter falls
+  back to a no-task heartbeat branch
 - provider/model choices drift without being treated as role changes
