@@ -278,6 +278,100 @@ hermes-grid --check
 
 before touching Nikolai, WSL, or Termux.
 
+## Victoria iPad / Moshi / Tailscale Operator Setup
+
+### Purpose
+
+Miguel can connect from iPad using Moshi over Tailscale, then attach to Victoria's persistent tmux/Hermes session.
+
+### Preferred Moshi profile fields
+
+```text
+Name: Victoria
+Host: paperclip.tailfedd3b.ts.net
+Fallback host: 100.112.150.24
+Port: 22
+User: root
+Auth: SSH key stored in Moshi/iOS Keychain
+Startup / remote command, if supported: victoria-attach
+```
+
+### Manual fallback
+
+If Moshi cannot run a startup command automatically:
+
+1. Connect to:
+   ```text
+   paperclip.tailfedd3b.ts.net
+   ```
+2. Then run:
+   ```bash
+   victoria-attach
+   ```
+
+### SSH config template
+
+Preferred MagicDNS profile:
+
+```sshconfig
+Host victoria
+    HostName paperclip.tailfedd3b.ts.net
+    User root
+    Port 22
+    RequestTTY force
+    RemoteCommand victoria-attach
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
+    TCPKeepAlive yes
+```
+
+Fallback direct tailnet-IP profile:
+
+```sshconfig
+Host victoria-tailnet-ip
+    HostName 100.112.150.24
+    User root
+    Port 22
+    RequestTTY force
+    RemoteCommand victoria-attach
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
+    TCPKeepAlive yes
+```
+
+### Notes
+
+- Moshi is client-side only.
+- Do not install Moshi on the server.
+- Do not change runtime behavior.
+- Do not alter hostnames, users, sessions, profiles, or tmux names.
+- Preserve `paperhermes` and `victoria-hermes` tmux sessions.
+- Do not touch secrets, `.env` files, SSH private keys, auth exports, Hermes session DBs, memory stores, or raw runtime dumps.
+- iPad key material stays in Moshi/iOS Keychain.
+- Donna has confirmed Tailscale visibility for `paperclip.tailfedd3b.ts.net`, `100.112.150.24`, and the peer-online state from her side.
+
+### Validation still pending
+
+Miguel/Donna still need to confirm the iPad attach path.
+
+Preferred command/concept:
+
+```bash
+ssh victoria -t victoria-attach
+```
+
+From Moshi, the profile should point to:
+
+```text
+paperclip.tailfedd3b.ts.net
+```
+
+with fallback:
+
+```text
+100.112.150.24
+```
+
 ## Implementation Tasks for Victoria
 
 > **For Hermes:** Use subagent-driven-development skill to implement this plan task-by-task if editing scripts or repo files. For direct VPS configuration, proceed with explicit command logging and stop before destructive changes.
