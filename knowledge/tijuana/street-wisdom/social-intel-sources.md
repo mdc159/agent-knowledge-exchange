@@ -1,154 +1,362 @@
-# Street Wisdom: Finding Real Intel in Tijuana
+# Street Wisdom: Lawful Tijuana Social + Public Intel Sources
 
-> Last Updated: April 2026  
-> Source: Research + community insights
+> Last Updated: May 2026  
+> Owner: Victoria / 1215 Dynamics knowledge base  
+> Scope: public/open-source monitoring only; no fake accounts, login scraping, or bot evasion.
 
 ## TL;DR
 
-- **Official = rules, Street = reality** — always cross-reference
-- **Human network > scraping** — build relationships
-- **Facebook groups + WhatsApp** = best real-time intel
-- **Reddit** = good for foreigner-specific questions
+- **Official sources first**: city, public safety, civil protection, water, border, weather, and airport data are higher-confidence than social chatter.
+- **Social media is useful but legally fragile**: Facebook/Instagram should be monitored manually or via approved Meta APIs only. X/Twitter should use official API access only.
+- **Human network beats scraping**: WhatsApp/Facebook groups can be valuable, but join and participate as a real person/business, not as an automation target.
+- **Corroborate before escalating**: urgent claims need an official source or two credible independent sources.
+- **Label uncertainty**: separate official alerts, media reports, public social posts, and unverified street chatter.
 
 ---
 
-## Social Media Landscape
+## Operating Rules for Agents
 
-| Platform | Accessibility | Best For |
-|----------|---------------|----------|
-| **Reddit** | ✅ Easy | Foreigner questions, expat experiences |
-| **Facebook Groups** | ⚠️ Needs account | Local business owners, real-time Q&A |
-| **X/Twitter** | ⚠️ API optional | Local news, business announcements |
-| **Instagram** | ⚠️ Manual | Business discovery, local vendors |
-| **WhatsApp** | ❌ Network | Real-time local intel (by invite only) |
+Agents may:
 
----
+- Research public websites and official public feeds.
+- Use RSS/Atom/API endpoints intentionally published for machine access.
+- Use official platform APIs after credentials and permissions are configured.
+- Summarize user-provided links, screenshots, exported posts, or manually collected notes.
+- Maintain watchlists and query lists in this repository.
 
-## Recommended Sources
+Agents must not:
 
-### Reddit Communities
-
-| Subreddit | Focus |
-|-----------|-------|
-| r/Tijuana | General TJ life, Q&A |
-| r/mexico | Broader Mexico business Q&A |
-| r/mexicoexpats | Expat-specific questions |
-| r/legaladviceMexico | Legal/permit questions |
-
-**Search terms**:
-- "opening business in Tijuana"
-- "bank account as foreigner Mexico"
-- "permits Tijuana"
-- "foreigner business"
-
-**Strategy**: Use web_search to find threads, then extract. Note: Reddit blocks some automated access.
+- Create fake Facebook/Instagram/X personas.
+- Automate browser activity behind login walls.
+- Scrape Facebook groups, Instagram pages, private profiles, member lists, comments, or private communities.
+- Rotate accounts/IPs or bypass rate limits, access controls, robots.txt, or platform restrictions.
+- Treat social chatter as confirmed fact without corroboration.
 
 ---
 
-### Facebook Groups (Recommended)
+## Compliance Notes
 
-Search for (espanol):
+### Facebook / Meta
 
-| Group Name | Focus |
-|------------|-------|
-| "Tijuana Entrepreneurs" | Business owners, networking |
-| "Negocios Tijuana" | Buy/sell, business advice |
-| "Inversionistas Tijuana" | Investors, opportunities |
-| "Emprendedores TJ" | Startups, small business |
-| "Tijuana Real Estate / Bienes Raíces TJ" | Property + permits |
+Meta is useful in Tijuana because many official pages and local groups post there first, but automated collection is restricted.
 
-**Strategy**: 
-1. Create Facebook account
-2. Request to join groups
-3. Use browser tool to access and search within groups
-4. Ask questions — locals respond quickly
+Use:
 
----
+- Manual monitoring from a real human-administered account.
+- A real 1215 Dynamics/Victoria business presence if created transparently.
+- Meta Graph API only where allowed.
+- Page Public Content Access only after App Review and Business Verification if the use case qualifies.
 
-### X/Twitter
+Avoid:
 
-**Hashtags to follow**:
-- #Tijuana
-- #NegocioTJ
-- #TijuanaEmprende
-- #InvierteEnTijuana
+- Bot accounts.
+- Browser automation behind login.
+- Scraping groups or public pages without permission.
+- Collecting private user data, member lists, or comments at scale.
 
-**Accounts to follow**:
-- Local journalists
-- Tijuana business associations
-- Real estate agents (they know permit info)
+Reference:
 
----
+- Meta Automated Data Collection Terms: https://www.facebook.com/legal/automated_data_collection_terms
+- Page Public Content Access: https://developers.facebook.com/docs/features-reference/page-public-content-access/
 
-### WhatsApp Groups (Best Intel)
+### X / Twitter
 
-**How to find**:
-- Ask local contacts to invite you
-- Business chambers (CANACINTRA) have member groups
-- Real estate agents include clients in groups
-- Lawyers/accountants share networks
+Use official X API tooling if automated reads/writes are needed. Do not scrape `x.com` pages through browser automation.
 
-**Golden rule**: Once you're in, **listen more than you ask**. These groups move fast with real-time problems and solutions.
+Use:
 
----
+- Official API access through approved tooling such as `xurl`.
+- Manual following/lists from a real account.
+- Public links provided by humans.
 
-## Key Local Contacts
+Avoid:
 
-### Lawyers (Abogados)
-- **Specialty**: Business formation, permits
-- **Where to find**: LinkedIn, CANACINTRA, Facebook groups
-- **Tip**: Get recommendations from other foreigners
+- Cookie/session automation.
+- Reverse-engineered APIs.
+- Bulk follow/like/reply automation.
+- Any engagement pattern that looks like spam.
 
-### Accountants (Contadores)
-- **Specialty**: Tax RFC, payroll, compliance
-- **Critical**: Find one who knows foreign-owned businesses
+Reference:
 
-### Permit Runners (Gestores)
-- **Specialty**: Speeding up municipal permits
-- **Where to find**: Referrals or Facebook groups
-- **Cost**: Typically 2,000-5,000 MXN per permit
-
-### Real Estate Agents
-- **Value**: Know which zones allow what, permit history of buildings
-- **Where to find**: Instagram, Facebook groups
+- X Developer Policy: https://docs.x.com/developer-terms/policy
 
 ---
 
-## Street Reality Patterns
+## Source Categories
 
-### Common Advice from Locals
+### 1. Official Municipal / Public Safety Sources
 
-1. **"No te estreses" (Don't stress)** — Many permits can wait until inspection
-2. **"Hay que relaciones"** — Relationships matter more than paperwork
-3. **"Todo se puede"** — Everything is possible (for a price)
-4. **"Primero rentar, luego papers"** — Rent first, figure out permits later
+These are priority sources for confirmed alerts, emergency updates, city notices, inspections, and public-safety impacts.
 
-### Red Flags
+- **Ayuntamiento de Tijuana**  
+  URL: https://www.tijuana.gob.mx/  
+  Use for: city announcements, municipal programs, permits, public notices.
 
-- **"Garantía" requests** — Some landlords require 6-12 months upfront
-- **Unlicensed "gestores"** — Verify before paying
-- **Permit "discounts"** — Often scams
-- **Too-good-to-be-true lease deals** — Usually zoning issues
+- **Tijuana Emergencias**  
+  URL: https://www.tijuana.gob.mx/emergencias/  
+  Use for: emergency contacts, linked official emergency resources, civil protection references.
+
+- **Protección Civil Tijuana — comunicados**  
+  URL: https://proteccioncivil.tijuana.gob.mx/noticialistadoDependencia.aspx  
+  Use for: weather risk, landslides, rain/flood advisories, inspections, event safety.
+
+- **Protección Civil Tijuana — Facebook**  
+  URL: https://www.facebook.com/dmpctj/  
+  Monitoring method: manual or approved Meta API only.
+
+- **Secretaría de Seguridad y Protección Ciudadana Municipal / Policía Tijuana**  
+  Main site: https://policia.tijuana.gob.mx/  
+  News: http://policia.tijuana.gob.mx/noticialistadoDependencia.aspx  
+  Weekly bulletin archive: https://policia.tijuana.gob.mx/_enterate1.aspx  
+  Facebook: https://www.facebook.com/SSPCM/  
+  X: https://x.com/policiatijuana
+
+- **Dirección de Bomberos Tijuana — Facebook**  
+  URL: https://www.facebook.com/bomberostj/  
+  Monitoring method: manual or approved Meta API only.  
+  Note: informational page; do not use as emergency reporting channel.
+
+### 2. Utilities / Infrastructure
+
+- **CESPT — water service**  
+  Main site: https://www.cespt.gob.mx/  
+  Programmed closures: https://www.cespt.gob.mx/programa.aspx  
+  Latest news: https://www.cespt.gob.mx/noticiascespt/noticiasultimas.aspx  
+  Facebook: https://www.facebook.com/CesptOficial/  
+  Use for: water cuts, sewer work, affected colonias, infrastructure repairs.
+
+- **Gobierno de Baja California — Prensa**  
+  URL: https://www.bajacalifornia.gob.mx/Prensa  
+  Use for: state-level public safety, health, infrastructure, labor, economic, and policy announcements.
+
+### 3. Border / Logistics / Mobility
+
+These sources matter for cross-border operations, employees, visitors, delivery timing, and logistics.
+
+- **CBP Border Wait Times API**  
+  URL: https://bwt.cbp.gov/api/waittimes  
+  Use for: official San Ysidro, Otay Mesa, Tecate waits; passenger, pedestrian, commercial, SENTRI/Ready lanes.
+
+- **CBP Border Wait Times RSS builder**  
+  URL: https://bwt.cbp.gov/customRss/New  
+  Use for: low-friction alerting via RSS.
+
+- **CBP San Ysidro page**  
+  URL: https://bwt.cbp.gov/details/09250401/POV
+
+- **CBP Otay Mesa passenger page**  
+  URL: https://bwt.cbp.gov/details/09250601/POV
+
+- **Tijuana Airport / GAP flight info**  
+  URL: https://www.aeropuertosgap.com.mx/en/?Itemid=1267  
+  Use for: airport disruption and flight status monitoring.
+
+### 4. Weather / Earthquake / Environmental Sources
+
+- **Servicio Meteorológico Nacional / CONAGUA**  
+  URL: https://smn.conagua.gob.mx/es/  
+  Use for: official weather forecasts, warnings, rainfall, heat, wind, storm advisories.
+
+- **USGS earthquake map and feeds**  
+  URL: https://earthquake.usgs.gov/earthquakes/map/  
+  Use for: earthquake monitoring via public maps and feeds.
+
+- **Servicio Sismológico Nacional — UNAM**  
+  URL: http://www.ssn.unam.mx/english/seismicity/latest-earthquakes/  
+  Use for: Mexico/Baja California seismic monitoring.
+
+### 5. Local / Regional News
+
+Use as secondary corroboration and early signal detection. Prefer RSS, newsletters, search alerts, GDELT, or manual review. If no feed exists, do not aggressively scrape.
+
+- **ZETA Tijuana** — https://zetatijuana.com/
+- **El Imparcial Tijuana** — https://www.elimparcial.com/tijuana/
+- **El Sol de Tijuana** — https://www.elsoldetijuana.com.mx/
+- **Agencia Fronteriza de Noticias / AFN** — https://www.afntijuana.info/
+- **Cadena Noticias Regional** — https://cadenanoticias.com/regional/
+- **Punto Norte** — https://puntonorte.info/
+- **San Diego Red** — https://www.sandiegored.com/
+- **KPBS Tijuana RSS** — https://www.kpbs.org/tags/tijuana.rss
+- **Voice of San Diego** — https://voiceofsandiego.org/
+
+Suggested query terms:
+
+- `Tijuana bloqueo`
+- `Tijuana cierre vial`
+- `Tijuana incendio`
+- `Tijuana CESPT`
+- `Tijuana garita`
+- `Tijuana seguridad`
+- `Tijuana transporte público`
+- `Tijuana lluvias`
+- `Tijuana maquiladora`
+- `Tijuana zona río`
+- `Tijuana Otay`
+- `Tijuana Playas`
+- `Tijuana Centro`
+- `Tijuana La Mesa`
+
+### 6. Business Chambers / Economic Sources
+
+Use for business climate, labor issues, regulation, chamber events, industrial logistics, and local lobbying priorities.
+
+- **CANACO Tijuana**  
+  Site: https://www.canacotijuana.com/  
+  Blog: https://www.canacotijuana.com/blogs  
+  Facebook: https://www.facebook.com/canacotj/
+
+- **COPARMEX Tijuana**  
+  Site: https://www.coparmextijuana.org/
+
+- **Consejo de Desarrollo Económico de Tijuana / CDT**  
+  Site: https://cdt.org.mx/  
+  News: https://cdt.org.mx/noticias/  
+  Facebook: https://www.facebook.com/CDTijuana/  
+  Instagram: https://www.instagram.com/cdt.tijuana/  
+  X: https://x.com/CDTijuana
+
+- **Consejo Coordinador Empresarial Tijuana / CCE**  
+  Site: https://www.ccetijuana.org/  
+  Facebook: https://www.facebook.com/CCETijuana/  
+  Instagram: https://www.instagram.com/cce.tijuana/
+
+- **Index Zona Costa Baja California**  
+  Site: https://www.indexzonacostabc.org.mx/  
+  Facebook: https://www.facebook.com/IndexZonaCostaBC/  
+  Use for: maquiladora/export/manufacturing conditions in Tijuana, Tecate, Ensenada, and Rosarito.
+
+- **Industrial News BC**  
+  Site: https://www.industrialnewsbc.com/  
+  Use for: maquiladora, industrial parks, investment, manufacturing operations.
 
 ---
 
-## Pro Tips
+## Public Social Watchlist
 
-1. **Buy a Mexican phone number** — Essential for bank accounts, permits
-2. **Build relationships with 2-3 local professionals** (lawyer, accountant, realtor)
-3. **Attend CANACINTRA events** — Business chamber networking
-4. **Use a local** (not just a service) for permit runs
-5. **Join a WhatsApp group ASAP** — Real-time intel is invaluable
-6. **Don't skip the RFC** — Everything requires it, get it early
+These accounts/pages are candidates for **manual follow** or **official API monitoring only**.
+
+- Protección Civil Tijuana — https://www.facebook.com/dmpctj/
+- SSPCM Tijuana — https://www.facebook.com/SSPCM/
+- Policía Tijuana X — https://x.com/policiatijuana
+- Bomberos Tijuana — https://www.facebook.com/bomberostj/
+- CESPT — https://www.facebook.com/CesptOficial/
+- Ayuntamiento de Tijuana — https://www.facebook.com/gobtijuanamx/
+- CDT Tijuana — https://www.facebook.com/CDTijuana/ and https://x.com/CDTijuana
+- CCE Tijuana — https://www.facebook.com/CCETijuana/
+- Index Zona Costa BC — https://www.facebook.com/IndexZonaCostaBC/
+
+Recommended setup:
+
+1. If a Facebook presence is needed, create a transparent human-administered business account/page, not a fake bot persona.
+2. Follow official/public pages manually.
+3. Let humans forward links, screenshots, or summaries to Victoria for analysis.
+4. If automation becomes necessary, pursue approved API access instead of browser scraping.
 
 ---
 
-## How to Contribute
+## Alert Taxonomy
 
-Found something useful? Document it:
+Severity:
 
-1. **Add to this knowledge base** — Commit to `knowledge/tijuana/`
-2. **Share in WhatsApp/Facebook groups** — Help other foreigners
-3. **Update skills** — If you found a repeatable process
+- `info`: routine business-relevant update.
+- `watch`: possible disruption; monitor.
+- `advisory`: likely localized operational impact.
+- `urgent`: confirmed major disruption or safety risk.
+- `critical`: immediate risk to people or core operations.
 
-> *"La información es poder"* — Information is power. Share what you learn.
+Categories:
+
+- `public_safety`
+- `weather`
+- `earthquake`
+- `water`
+- `power`
+- `border`
+- `traffic_mobility`
+- `business_regulation`
+- `labor_economy`
+- `industrial_logistics`
+- `protests_blockades`
+- `tourism_events`
+- `neighborhood_alert`
+
+Confidence labels:
+
+- `official_confirmed`: official source confirms.
+- `media_reported`: credible media reports, not yet official.
+- `multi_source`: two or more independent credible sources.
+- `social_unverified`: public social chatter only.
+- `human_network_unverified`: trusted-contact tip but not independently confirmed.
+
+---
+
+## Daily Monitoring Playbook
+
+1. Check official alerts:
+   - Protección Civil Tijuana
+   - Policía / SSPCM
+   - CESPT
+   - Gobierno BC Prensa
+2. Check operational feeds:
+   - CBP border wait times / RSS
+   - SMN/CONAGUA weather
+   - USGS/SSN seismic feeds
+   - airport status if travel matters
+3. Scan local/regional news queries.
+4. Review manual social watchlist for official pages only.
+5. Tag each item by category, severity, confidence, geography, and operational impact.
+6. Escalate only when:
+   - official confirmation exists, or
+   - two credible sources agree, or
+   - a trusted human source flags immediate risk and the uncertainty is clearly labeled.
+
+---
+
+## Incident Triage Checklist
+
+For each incident candidate, capture:
+
+- Source URL or human source note.
+- Timestamp and timezone.
+- Location / colonia / crossing / affected route.
+- Category and severity.
+- Confidence label.
+- Operational impact for 1215 Dynamics.
+- Recommended action.
+- Follow-up check time.
+
+Example:
+
+```yaml
+incident:
+  title: "CESPT programmed water outage in Otay"
+  source: "https://www.cespt.gob.mx/programa.aspx"
+  timestamp_local: "2026-05-01T09:00:00-07:00"
+  category: water
+  severity: advisory
+  confidence: official_confirmed
+  geography: "Otay / affected colonias per CESPT notice"
+  operational_impact: "Check whether office/shop site or employee homes are affected."
+  recommended_action: "Notify affected team; confirm water storage if needed."
+  follow_up: "Recheck CESPT notice in 4 hours."
+```
+
+---
+
+## Street Reality Notes
+
+- **Official = rules; street = reality**. Use both, but label them differently.
+- **Relationships matter**. Local lawyers, accountants, realtors, gestores, chamber members, and vendors often hear real disruption before it hits formal channels.
+- **Listen before asking** in WhatsApp/Facebook communities. Reputation matters.
+- **Never outsource judgment to one source**. A single loud post can be bullshit, panic, politics, or clout-chasing.
+- **Keep humans in the loop** for private groups, sensitive locations, rumors, crime, or anything that could hurt people if mishandled.
+
+---
+
+## Follow-Up Work
+
+- Build a `source-catalog.yaml` with polling cadence, reliability, access method, and owner per source.
+- Add an OPML file for RSS-capable sources.
+- Create a daily Tijuana brief template.
+- If X monitoring becomes useful, install/configure `xurl` with official X API credentials.
+- If Meta monitoring becomes necessary, evaluate Meta App Review and Page Public Content Access instead of scraping.
