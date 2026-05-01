@@ -1,7 +1,7 @@
 # Victoria Hermes Grid Phase 1 Handoff Plan
 
 ## Status
-Planned — tracked in Linear issue [121-24](https://linear.app/1215-labs/issue/121-24/plan-victoria-phase-1-hermes-ipadtmux-grid-handoff) and GitHub issue [#19](https://github.com/mdc159/agent-knowledge-exchange/issues/19).
+Phase 1 spike executed on Victoria (`paperhermes`) — tracked in Linear issue [121-24](https://linear.app/1215-labs/issue/121-24/plan-victoria-phase-1-hermes-ipadtmux-grid-handoff) and GitHub issue [#19](https://github.com/mdc159/agent-knowledge-exchange/issues/19).
 
 ## Goal
 Build a safe, repeatable Phase 1 path for iPad access to multiple Hermes agents by using a tmux/SSH grid, with **Victoria** (`paperhermes`) as the first remote target. Donna prepares the plan and access contract; Victoria should perform the remote implementation herself from this artifact.
@@ -77,10 +77,121 @@ Victoria's implementation is successful when all of the following are true:
 
 - [x] Donna can authenticate to Victoria using the dedicated `victoria` SSH alias.
 - [x] A read-only readiness probe reports hostname, user, tmux path/version, Hermes path/version, and existing tmux sessions without exposing secrets.
-- [ ] Victoria has a tmux session dedicated to Hermes work, using a persona-labeled session/window name.
-- [ ] Donna can connect to Victoria through SSH and attach/read the tmux session from an iPad-suitable terminal flow.
-- [ ] Victoria documents exact commands run, verification output summaries, and any blockers back to Linear/GitHub.
-- [ ] No secrets or raw runtime state are committed, pasted, or copied into the repo.
+- [x] Victoria has a tmux session dedicated to Hermes work, using a persona-labeled session/window name.
+- [ ] Donna can connect to Victoria through SSH and attach/read the tmux session from an iPad-suitable terminal flow. Pending final outside/iPad validation using `ssh victoria -t victoria-attach`.
+- [x] Victoria documents exact commands run, verification output summaries, and any blockers back to Linear/GitHub.
+- [x] No secrets or raw runtime state are committed, pasted, or copied into the repo.
+
+## Victoria Phase 1 Execution Report
+
+Executed on Victoria / `paperhermes` as `root`.
+
+### Confirmed environment
+
+```text
+host=paper user=root pwd=/root
+os=Ubuntu 24.04.4 LTS
+hermes_path=/root/.local/bin/hermes
+tmux_path=/usr/bin/tmux
+hermes_version=Hermes Agent v0.12.0 (2026.4.30)
+tmux_version=tmux 3.4
+```
+
+Existing tmux state before the spike contained the long-running `paperhermes` session. The Phase 1 spike added a dedicated persona-labeled session:
+
+```text
+paperhermes: existing session, left untouched
+victoria-hermes: dedicated Victoria session, window `Victoria`
+```
+
+### Commands used, sanitized
+
+```bash
+hostname
+whoami
+command -v hermes
+/root/.local/bin/hermes --version
+command -v tmux
+tmux -V
+tmux list-sessions
+tmux list-windows -a -F '#{session_name}:#{window_index}:#{window_name} cmd=#{pane_current_command}'
+```
+
+Victoria session launcher created locally:
+
+```bash
+cat > /root/.local/bin/victoria-hermes-session <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+/root/.local/bin/hermes || true
+printf '\n[Victoria Hermes exited -- shell kept alive]\n'
+exec bash -l
+SH
+chmod 700 /root/.local/bin/victoria-hermes-session
+```
+
+Dedicated session creation:
+
+```bash
+tmux has-session -t victoria-hermes 2>/dev/null || \
+  tmux new-session -d -s victoria-hermes -n Victoria /root/.local/bin/victoria-hermes-session
+tmux rename-window -t victoria-hermes:0 Victoria
+tmux select-pane -t victoria-hermes:0.0 -T Victoria
+```
+
+Simple attach wrapper created locally:
+
+```bash
+cat > /root/.local/bin/victoria-attach <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+SESSION="victoria-hermes"
+WINDOW="Victoria"
+LAUNCHER="$HOME/.local/bin/victoria-hermes-session"
+if tmux has-session -t "$SESSION" 2>/dev/null; then
+  exec tmux attach-session -t "$SESSION"
+fi
+exec tmux new-session -s "$SESSION" -n "$WINDOW" "$LAUNCHER"
+SH
+chmod 700 /root/.local/bin/victoria-attach
+bash -n /root/.local/bin/victoria-attach
+bash -n /root/.local/bin/victoria-hermes-session
+```
+
+Repeated iPad-friendly attach flow:
+
+```bash
+ssh victoria -t victoria-attach
+```
+
+Fallback one-liner if the wrapper is not on `PATH`:
+
+```bash
+ssh victoria -t 'tmux attach -t victoria-hermes || /root/.local/bin/victoria-attach'
+```
+
+### What worked
+
+- Local environment matches Donna's readiness probe: Ubuntu 24.04.4 LTS, tmux 3.4, Hermes Agent v0.12.0.
+- Existing `paperhermes` tmux session was preserved.
+- New `victoria-hermes` tmux session exists with a human-facing `Victoria` window label.
+- `victoria-attach` provides a one-command attach/create flow suitable for Blink, Termius, or another iPad SSH client.
+- Hermes launched inside the `victoria-hermes` tmux session and reached the Hermes welcome prompt.
+
+### What failed / caveat
+
+- A non-interactive automated PTY attach probe was too aggressive and caused the first `victoria-hermes` session attempt to exit. The session was recreated with `/root/.local/bin/victoria-hermes-session`, which keeps a shell alive if Hermes exits so future attach attempts do not destroy the tmux session.
+- I did not copy `.env` files, Hermes session DBs, memory stores, SSH private keys, auth exports, provider tokens, or raw runtime dumps.
+
+### Next recommended step
+
+Have Donna validate from the outside/iPad path with:
+
+```bash
+ssh victoria -t victoria-attach
+```
+
+If that works, promote the same pattern into the Studio54 hub grid as the `Victoria` tab, then add a `hermes-grid --check` mode before expanding to Nikolai, WSL, or Termux.
 
 ## Implementation Tasks for Victoria
 
