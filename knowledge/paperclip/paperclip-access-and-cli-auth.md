@@ -2,6 +2,11 @@
 
 This note captures the most reusable operational lessons learned while trying to operate a live Paperclip deployment from a VPS.
 
+For a quick guide to the Paperclip notes in this directory, see
+[Paperclip Knowledge](README.md). If you are configuring a company or checking
+runtime wiring rather than access, use
+[Paperclip Company Setup](paperclip-company-setup.md).
+
 ## Executive Summary
 
 The most important lesson is simple:
@@ -181,7 +186,8 @@ These codepaths were useful for understanding the real auth model:
 
 See also:
 
-- `knowledge/paperclip/paperclip-company-setup.md`
+- [Paperclip Knowledge](README.md)
+- [Paperclip Company Setup](paperclip-company-setup.md)
 - skill: `paperclip-board-cli-auth`
 - skill: `paperclip-vps-access-troubleshooting`
 - skill: `honcho-paperclip-hermes-memory-architecture`
