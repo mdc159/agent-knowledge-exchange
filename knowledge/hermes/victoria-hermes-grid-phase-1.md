@@ -372,6 +372,28 @@ with fallback:
 100.112.150.24
 ```
 
+## Optional Phase 2: Moshi Hook Notifications / Approvals
+
+### Purpose
+
+The current Phase 1 baseline remains SSH over Tailscale into `victoria-attach`. Moshi is client-side only for Phase 1.
+
+`moshi-hook` is a separate future integration path for push notifications, Live Activity, Apple Watch approvals, and bidirectional agent approvals. It is not required for the current Victoria tmux/Hermes attach flow.
+
+### Token and pairing notes
+
+- `moshi-hook` pairing is a stateful operation that registers the host with Moshi and stores a host secret.
+- Current Moshi docs refer to `MOSHI_PAIRING_TOKEN` for pairing.
+- Miguel has provided `MOSHI_API_KEY` in Donna/Hermes environment files, but that value should be treated only as a possible pairing-token candidate until the docs/integration path are explicitly confirmed.
+- Do not assume `MOSHI_API_KEY` is a legacy webhook token.
+- Do not print, copy, store, transform, or test either token value in this repo or on Victoria.
+
+### Approval rules
+
+Do not install `moshi-hook`, pair Victoria with Moshi, register this host, or store a Moshi host secret without explicit Miguel/Donna approval.
+
+Until that approval exists, Victoria's only documented Moshi responsibility is to keep the SSH/Tailscale/tmux host path stable and preserve the recommended iPad connection profile.
+
 ## Implementation Tasks for Victoria
 
 > **For Hermes:** Use subagent-driven-development skill to implement this plan task-by-task if editing scripts or repo files. For direct VPS configuration, proceed with explicit command logging and stop before destructive changes.
