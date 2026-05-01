@@ -11,9 +11,25 @@ Required permissions:
 - Pull requests: read/write
 - Metadata: read-only
 
-## Storage Rule
+## Accepted Distribution Pattern
 
-Store the credential in each trusted runtime as a secret.
+Use a host-local auth file mounted read-only into selected trusted runtimes.
+
+Operational shape:
+
+- keep one dedicated repo bot credential per trusted node outside Git
+- store it in an operator-managed host-local auth file
+- mount that file read-only only into runtimes that need to mutate this repo
+- do not mount it into general-purpose or untrusted runtimes
+
+## Why This Pattern
+
+This is preferred over:
+
+- per-node secret injection into every runtime, which creates secret sprawl and
+  drift
+- a shared secret manager reference, which adds runtime dependency and failure
+  modes that this repo does not otherwise require
 
 Do not commit it here.
 

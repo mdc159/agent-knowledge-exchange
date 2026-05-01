@@ -90,5 +90,20 @@ The right operational model is:
 - generated subsystem runtime files
 - explicit documented config surfaces
 
+## Trusted Agent Repo Bot Credential
+
+For this repo's machine credential, use a separate host-local auth file on the
+node and mount it read-only into only the trusted runtimes that need GitHub
+write access.
+
+Do not:
+
+- commit it
+- bake it into images
+- copy it into every subsystem runtime file by default
+
+This keeps the repo bot credential operator-managed and narrowly exposed while
+still letting selected trusted agents act on the repository.
+
 Do not rely on silent fallbacks. If a config file is declared, make it real or
 remove the claim.
