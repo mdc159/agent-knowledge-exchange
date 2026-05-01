@@ -59,6 +59,26 @@ Reference:
 - Meta Automated Data Collection Terms: https://www.facebook.com/legal/automated_data_collection_terms
 - Page Public Content Access: https://developers.facebook.com/docs/features-reference/page-public-content-access/
 
+### Third-Party Facebook Scraper Marketplaces / Apify
+
+Apify offers maintained Facebook scraper actors, including:
+
+- Facebook Groups Scraper: https://apify.com/apify/facebook-groups-scraper
+- Facebook Posts Scraper: https://apify.com/apify/facebook-posts-scraper
+- Facebook Pages Scraper: https://apify.com/apify/facebook-pages-scraper
+
+These tools can extract public Facebook group/page/profile data and export structured datasets. However, their existence does **not** eliminate Meta policy risk for 1215 Dynamics.
+
+Operational guidance:
+
+- Treat Apify Facebook actors as **high policy-risk** unless Meta permission/API authorization is confirmed for the intended use.
+- Do not use Apify to scrape Facebook groups, pages, comments, user profiles, or engagement data for routine monitoring without explicit review.
+- Do not assume “public” equals “safe to automate.” Meta’s automated data terms still require express written permission or explicit authorization for automated collection from Meta products.
+- If Apify is considered later, require a human compliance decision first and document: target URLs, data fields, purpose, retention period, legal basis, and whether personal data is collected.
+- Prefer official Meta API access, manual monitoring, user-provided links/screenshots, newsletters, or non-Meta public sources.
+
+Bottom line: Apify may be technically capable, but for this operation it should be a **review-required exception**, not the default monitoring path.
+
 ### X / Twitter
 
 Use official X API tooling if automated reads/writes are needed. Do not scrape `x.com` pages through browser automation.
