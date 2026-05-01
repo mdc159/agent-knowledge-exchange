@@ -78,7 +78,7 @@ Victoria's implementation is successful when all of the following are true:
 - [x] Donna can authenticate to Victoria using the dedicated `victoria` SSH alias.
 - [x] A read-only readiness probe reports hostname, user, tmux path/version, Hermes path/version, and existing tmux sessions without exposing secrets.
 - [x] Victoria has a tmux session dedicated to Hermes work, using a persona-labeled session/window name.
-- [ ] Donna can connect to Victoria through SSH and attach/read the tmux session from an iPad-suitable terminal flow. Pending final outside/iPad validation using `ssh victoria -t victoria-attach`.
+- [x] Donna can connect to Victoria through SSH and attach/read the tmux session from an iPad-suitable terminal flow. Passed with caveat: Hermes exited because Miguel intentionally exited it; shell fallback preserved access; Donna restarted Hermes with `victoria-hermes-session`.
 - [x] Victoria documents exact commands run, verification output summaries, and any blockers back to Linear/GitHub.
 - [x] No secrets or raw runtime state are committed, pasted, or copied into the repo.
 
@@ -175,23 +175,19 @@ ssh victoria -t 'tmux attach -t victoria-hermes || /root/.local/bin/victoria-att
 - Local environment matches Donna's readiness probe: Ubuntu 24.04.4 LTS, tmux 3.4, Hermes Agent v0.12.0.
 - Existing `paperhermes` tmux session was preserved.
 - New `victoria-hermes` tmux session exists with a human-facing `Victoria` window label.
-- `victoria-attach` provides a one-command attach/create flow suitable for Blink, Termius, or another iPad SSH client.
+- `victoria-attach` provides a one-command attach/create flow suitable for Blink, Termius, Moshi, or another iPad SSH client.
 - Hermes launched inside the `victoria-hermes` tmux session and reached the Hermes welcome prompt.
+- Outside/iPad/Moshi-style SSH + tmux attach validation is **PASSED WITH CAVEAT**: Hermes exited because Miguel intentionally exited it; the shell fallback preserved access; Donna restarted Hermes via `victoria-hermes-session`.
 
 ### What failed / caveat
 
 - A non-interactive automated PTY attach probe was too aggressive and caused the first `victoria-hermes` session attempt to exit. The session was recreated with `/root/.local/bin/victoria-hermes-session`, which keeps a shell alive if Hermes exits so future attach attempts do not destroy the tmux session.
+- During Donna's direct-control validation, Hermes exit was intentional operator behavior by Miguel, not an attach failure. The fallback shell preserved access and Donna restarted Hermes with `victoria-hermes-session`.
 - I did not copy `.env` files, Hermes session DBs, memory stores, SSH private keys, auth exports, provider tokens, or raw runtime dumps.
 
 ### Next recommended step
 
-Have Donna validate from the outside/iPad path with:
-
-```bash
-ssh victoria -t victoria-attach
-```
-
-If that works, promote the same pattern into the Studio54 hub grid as the `Victoria` tab, then add a `hermes-grid --check` mode before expanding to Nikolai, WSL, or Termux.
+Promote the same pattern into the Studio54 hub grid as the `Victoria` tab, then add a `hermes-grid --check` mode before expanding to Nikolai, WSL, or Termux.
 
 ## Victoria Communications Protocol
 
