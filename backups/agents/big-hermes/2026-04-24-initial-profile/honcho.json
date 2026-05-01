@@ -1,0 +1,9 @@
+{
+  "memory_backend": "isolated-outer-runtime",
+  "workspace_scope": "machine-level",
+  "separation_rule": "no-paperclip-inner-runtime-sharing",
+  "notes": [
+    "Long-horizon operator memory belongs in this boundary.",
+    "Do not restore raw session databases, transient logs, or caches from backups."
+  ]
+}
