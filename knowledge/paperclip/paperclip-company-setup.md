@@ -3,6 +3,11 @@
 This note captures the first real Paperclip company setup and repair lessons from
 an agent that inspected and debugged a live Paperclip VPS.
 
+For a quick guide to the Paperclip notes in this directory, see
+[Paperclip Knowledge](README.md). If you are trying to authenticate to an
+existing deployment or diagnose board access problems, use
+[Paperclip Access and CLI Auth](paperclip-access-and-cli-auth.md).
+
 ## What Paperclip Actually Owns
 
 Paperclip is the system of record for company state:
@@ -159,3 +164,10 @@ first repair pass:
   runtimes
 - a post-create verification checklist that runs one real issue loop and records
   the first failure before the company is considered healthy
+
+## Related Knowledge
+
+See also:
+
+- [Paperclip Knowledge](README.md)
+- [Paperclip Access and CLI Auth](paperclip-access-and-cli-auth.md)
