@@ -8,6 +8,7 @@ This repo is the shared exchange for:
 - portable skills
 - curated agent-definition backups
 - issue and PR based coordination
+- agent-operable GitHub and Linear workflow standards
 
 It is intentionally narrow. If content is not reusable, auditable, or restorable,
 it probably does not belong here.
@@ -41,6 +42,7 @@ it probably does not belong here.
 3. Merge through pull requests, not direct pushes to `main`.
 4. Prefer updating an existing doc over creating duplicate knowledge.
 5. If a procedure repeats and works, promote it into a skill or knowledge doc.
+6. Follow `docs/agent-operating-procedure.md` for planned agent work.
 
 ## Backup Rules
 
@@ -57,3 +59,5 @@ Every addition should be easy to answer:
 - what problem does this solve?
 - who will reuse it?
 - why is this in version control instead of live runtime state?
+- what Linear issue or operating need does it close?
+- what validation was performed?
