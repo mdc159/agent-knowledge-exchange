@@ -1,0 +1,13 @@
+default_model: restored-from-node-pin
+provider: restored-from-node-pin
+
+runtime:
+  type: host-native
+  home: /root/.hermes
+  launcher: hermes-dashboard.service
+  access: private-tailnet
+  memory_mode: isolated-outer-runtime
+
+notes:
+  - Restore the node-specific provider and model pin from the external secret source before launch.
+  - Keep this runtime separate from Paperclip-internal Hermes homes and session stores.
