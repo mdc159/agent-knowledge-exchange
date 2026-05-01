@@ -54,8 +54,8 @@ What the repeated proofs established:
   comments along with the expected `config.yaml`
 - the assignment wake path works through the normal heartbeat adapter execution
   path
-- API-persisted `adapterConfig.env.HERMES_HOME` binding objects succeed once
-  Paperclip passes resolved runtime config into the adapter
+- API-persisted `adapterConfig.env.HERMES_HOME` bindings work once Paperclip
+  resolves them to runtime values before invoking the adapter
 
 ## Operational Lesson
 
@@ -81,7 +81,7 @@ For the proven `hermes_local` path to keep working:
   and `wakeReason` into adapter config because `hermes-paperclip-adapter`
   builds its default prompt from `ctx.config`
 
-If the assignment wake fields are omitted, the adapter can degrade into its
+If the assignment wake fields are omitted, the adapter can fall back to its
 no-task heartbeat branch.
 
 ## Company-Scoped Isolation
@@ -103,11 +103,11 @@ When creating a Paperclip company:
 1. create the company and org roles in Paperclip
 2. assign adapter types deliberately
 3. verify each required local runtime exists where Paperclip can execute it
-4. set company-scoped homes for runtimes that accumulate memory or state and
-   ensure the Paperclip runtime user owns those trees
-5. verify local adapters receive resolved config/env values plus assignment-wake
+4. set company-scoped homes for runtimes that accumulate memory or state
+5. ensure the Paperclip runtime user owns those runtime-home trees
+6. verify local adapters receive resolved config/env values plus assignment-wake
    task metadata when they build prompts from runtime config
-6. pin important models for approval-bearing roles
+7. pin important models for approval-bearing roles
 
 ## Known Failure Modes
 
