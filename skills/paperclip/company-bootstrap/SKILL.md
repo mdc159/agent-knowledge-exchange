@@ -10,11 +10,11 @@ Create or repair a Paperclip company with deliberate runtime wiring.
 2. assign adapter types explicitly
 3. verify each required runtime exists where Paperclip can execute it
 4. pin important models for approval-bearing roles
-5. set company-scoped runtime homes where memory isolation matters and ensure
-   the Paperclip runtime user owns them
-6. verify local adapters receive resolved config and env values rather than raw
+5. set company-scoped runtime homes where memory isolation matters
+6. ensure the Paperclip runtime user owns those runtime-home trees
+7. verify local adapters receive resolved config and env values rather than raw
    binding objects
-7. run one issue loop end to end, including an assignment wake, before trusting
+8. run one issue loop end to end, including an assignment wake, before trusting
    autonomy
 
 ## Common Checks
