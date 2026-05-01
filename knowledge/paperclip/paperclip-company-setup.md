@@ -3,6 +3,11 @@
 This note captures the practical lessons from observed Paperclip company setups
 and the first runtime inspection work done against a live Paperclip VPS.
 
+For a quick guide to the Paperclip notes in this directory, see
+[Paperclip Knowledge](README.md). If you are trying to authenticate to an
+existing deployment or diagnose board access problems, use
+[Paperclip Access and CLI Auth](paperclip-access-and-cli-auth.md).
+
 ## What Paperclip Actually Owns
 
 Paperclip is the system of record for company state:
@@ -79,3 +84,10 @@ When creating a Paperclip company:
 - `hermes_local` accidentally points at outer Hermes state instead of a
   company-local runtime home
 - provider/model choices drift without being treated as role changes
+
+## Related Knowledge
+
+See also:
+
+- [Paperclip Knowledge](README.md)
+- [Paperclip Access and CLI Auth](paperclip-access-and-cli-auth.md)
