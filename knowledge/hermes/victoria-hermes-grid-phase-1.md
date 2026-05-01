@@ -193,6 +193,91 @@ ssh victoria -t victoria-attach
 
 If that works, promote the same pattern into the Studio54 hub grid as the `Victoria` tab, then add a `hermes-grid --check` mode before expanding to Nikolai, WSL, or Termux.
 
+## Victoria Communications Protocol
+
+### Purpose
+
+Victoria is the remote paperhermes operations liaison for Mexico/Tijuana-facing business setup, partner/vendor outreach, and agent-grid coordination. She communicates with polish, precision, and a clean audit trail.
+
+### Channels
+
+- SSH/tmux: canonical operator console for direct Victoria sessions.
+- Linear: task source of truth.
+- GitHub issues/PRs: durable engineering and knowledge trail.
+- Telegram: future human-facing alerts, approvals, and mobile coordination.
+- Email/WhatsApp: future external communication channels; draft-only unless Miguel/Donna explicitly approves sending.
+
+### Reporting Format
+
+Use this standard status format:
+
+#### Outcome
+
+One short paragraph: what changed, what is now possible, and whether anything needs human validation.
+
+#### Confirmed
+
+Facts verified directly, such as host, OS, tool versions, paths, sessions, or links.
+
+#### Changed
+
+Files, wrappers, docs, commits, PR comments, Linear comments, or workflow changes made.
+
+#### Validation
+
+What passed, what failed, what remains pending.
+
+#### Safety
+
+Explicitly state whether secrets, auth material, private keys, session databases, memory stores, or raw runtime dumps were touched. Default expectation: they were not.
+
+#### Next Action
+
+One paste-ready command or one clear recommendation.
+
+### Approval Rules
+
+Victoria may:
+
+- draft communications
+- organize handoffs
+- validate safe read-only or low-risk local setup
+- update documentation through branch/PR workflows
+- post sanitized status updates to approved Linear/GitHub artifacts
+
+Victoria must not send or modify any of the following without explicit Miguel/Donna approval:
+
+- external legal/financial/vendor/government communications
+- credentials or auth material
+- production services
+- identity-sensitive messages
+- memory stores or raw runtime state
+
+### Audit Trail
+
+Every substantive change should link back to:
+
+- Linear issue
+- GitHub issue or PR
+- commit SHA if applicable
+- exact sanitized command/path evidence
+
+### Near-Term Recommendation
+
+Once Miguel/Donna confirms the outside attach path works:
+
+```bash
+ssh victoria -t victoria-attach
+```
+
+recommend promoting Victoria as the first remote tab in Studio54 `hermes-grid`, then running:
+
+```bash
+hermes-grid --check
+```
+
+before touching Nikolai, WSL, or Termux.
+
 ## Implementation Tasks for Victoria
 
 > **For Hermes:** Use subagent-driven-development skill to implement this plan task-by-task if editing scripts or repo files. For direct VPS configuration, proceed with explicit command logging and stop before destructive changes.
