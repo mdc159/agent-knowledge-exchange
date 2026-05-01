@@ -260,19 +260,80 @@ Every substantive change should link back to:
 
 ### Near-Term Recommendation
 
-Once Miguel/Donna confirms the outside attach path works:
+Outside/iPad/Moshi attach validation is complete and should be treated as **passed with caveat**: Hermes exited because Miguel intentionally exited it, the shell fallback preserved access, and Donna restarted Hermes with `victoria-hermes-session`.
 
-```bash
-ssh victoria -t victoria-attach
+Proceed to Phase 1.5: promote Victoria as the first remote tab in the Studio54 `hermes-grid`, then run a read-only readiness mode before touching Nikolai, WSL, or Termux.
+
+## Phase 1.5 Studio54 Hub-Grid Promotion Plan
+
+### Goal
+
+Add Victoria as the first remote tab in Donna's Studio54 hub grid while keeping the rollout reversible, read-only-first, and isolated from later Nikolai/WSL/Termux expansion.
+
+### Scope
+
+- Promote exactly one remote tab: `Victoria`.
+- Use the existing remote contract: `ssh victoria -t victoria-attach`.
+- Add or define a `hermes-grid --check` readiness mode before any new host is added.
+- Do not install packages, change services, copy runtime state, or touch remote sessions during the planning step.
+- Treat Nikolai, WSL, and Termux as blocked until `hermes-grid --check` passes for Donna local state and the Victoria remote tab contract.
+
+### Proposed tab contract
+
+```text
+Hub: Studio54 / Donna
+Tab label: Victoria
+Remote command: ssh victoria -t victoria-attach
+Expected remote tmux session: victoria-hermes
+Expected remote window label: Victoria
+Expected fallback behavior: if Hermes exits, shell remains available; operator can run victoria-hermes-session
 ```
 
-recommend promoting Victoria as the first remote tab in Studio54 `hermes-grid`, then running:
+### `hermes-grid --check` readiness mode
+
+The check mode should be read-only and safe to run repeatedly. It should report PASS/WARN/FAIL without attaching to live remote tmux panes unless explicitly requested.
+
+Required checks:
+
+1. Confirm the local hub script/config can find the `Victoria` tab definition.
+2. Confirm the SSH alias exists locally without printing private key paths or key material.
+3. Confirm the planned command is exactly `ssh victoria -t victoria-attach` or a documented equivalent.
+4. Confirm the local terminal supports tmux/grid launch requirements.
+5. Confirm no tab definitions exist yet for Nikolai, WSL, or Termux unless marked disabled/pending.
+6. Print a dry-run launch summary instead of opening sessions.
+
+Optional remote-safe check, only after Donna approves network probing:
+
+```bash
+ssh -o BatchMode=yes -o ConnectTimeout=8 victoria 'command -v victoria-attach >/dev/null && tmux has-session -t victoria-hermes'
+```
+
+Do not use SSH `-t` in check mode. Interactive `-t` belongs to the actual attach flow, not readiness probing.
+
+### Phase 1.5 acceptance criteria
+
+- [ ] Studio54 hub-grid plan has a single enabled remote tab: `Victoria`.
+- [ ] `hermes-grid --check` exists or is specified before implementation.
+- [ ] Check mode is read-only and does not attach to live tmux panes by default.
+- [ ] Check mode blocks Nikolai/WSL/Termux expansion until Victoria passes.
+- [ ] Operator has an exact safe command/procedure for the first real attach.
+- [ ] No secrets, auth exports, session databases, memory stores, or raw runtime dumps are copied into docs or scripts.
+
+### Exact next safe command/procedure for Donna
+
+After reviewing this plan, Donna should run a local read-only dry-run/check on Studio54, not from Victoria:
 
 ```bash
 hermes-grid --check
 ```
 
-before touching Nikolai, WSL, or Termux.
+If `hermes-grid --check` does not exist yet, Donna should create it as a dry-run/readiness-only mode first. The first permitted implementation target is the local Studio54 hub script/config only; the only enabled remote tab should be `Victoria`, using:
+
+```bash
+ssh victoria -t victoria-attach
+```
+
+Do not add Nikolai, WSL, or Termux tabs until the Victoria-only readiness check passes.
 
 ## Victoria iPad / Moshi / Tailscale Operator Setup
 
