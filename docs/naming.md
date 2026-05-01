@@ -28,3 +28,18 @@ Use these labels consistently:
 - `n8n`
 - `ops`
 - `needs-review`
+- `agent-work`
+- `copilot`
+- `codex`
+- `human-review`
+- `blocked`
+- `needs-preview`
+- `low-risk`
+- `automerge`
+- `no-automerge`
+
+## Branches and Pull Requests
+
+- Linear-backed branch: `121-123-short-slug`
+- Exploratory branch before Linear issue exists: `ops-short-slug`
+- PR title: `[121-123] Short outcome`
