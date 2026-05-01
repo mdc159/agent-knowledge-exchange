@@ -34,13 +34,27 @@ Donna generated a dedicated public key for this connection:
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBPPs0LEC6v4GJ2HVtxbYxO07fjpd1SOtGdqyDVCcNF/ donna-to-victoria@hermes-grid
 ```
 
-Current blocker: the host is reachable, but Donna is not authenticated yet:
+Access is now verified. Miguel repaired `/root/.ssh/authorized_keys` on Victoria after the key had been pasted into another key line's comment field. Donna now authenticates successfully:
 
 ```text
-root@2.24.31.98: Permission denied (publickey,password).
+host=paper user=root
 ```
 
-No remote install, configuration, or mutation has been performed by Donna.
+Read-only readiness probe from Donna reports:
+
+```text
+host=paper user=root pwd=/root
+os=Ubuntu 24.04.4 LTS
+tmux_path=/usr/bin/tmux
+local_hermes=/root/.local/bin/hermes
+tmux_version=tmux 3.4
+hermes_version=Hermes Agent v0.12.0 (2026.4.30)
+tmux_sessions_start
+paperhermes: 1 windows (created Sat Apr 25 03:03:24 2026)
+tmux_sessions_end
+```
+
+No install or configuration mutation has been performed by Donna; checks so far were read-only after the SSH key repair.
 
 ## Security Boundaries
 
@@ -61,8 +75,8 @@ Victoria should use her own Hermes setup, credentials, memory/profile config, an
 
 Victoria's implementation is successful when all of the following are true:
 
-- [ ] Donna can authenticate to Victoria using the dedicated `victoria` SSH alias.
-- [ ] A read-only readiness probe reports hostname, user, tmux path/version, Hermes path/version, and existing tmux sessions without exposing secrets.
+- [x] Donna can authenticate to Victoria using the dedicated `victoria` SSH alias.
+- [x] A read-only readiness probe reports hostname, user, tmux path/version, Hermes path/version, and existing tmux sessions without exposing secrets.
 - [ ] Victoria has a tmux session dedicated to Hermes work, using a persona-labeled session/window name.
 - [ ] Donna can connect to Victoria through SSH and attach/read the tmux session from an iPad-suitable terminal flow.
 - [ ] Victoria documents exact commands run, verification output summaries, and any blockers back to Linear/GitHub.
