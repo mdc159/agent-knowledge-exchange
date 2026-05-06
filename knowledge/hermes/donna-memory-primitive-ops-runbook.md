@@ -221,6 +221,7 @@ Operational interpretation:
 
 - A tab merely being open should not be treated as Miguel actively conversing.
 - A UI can still create lightweight API-server sessions for health/model/chat probes.
+- Do not classify every `api_server` session as a probe: tiny sessions with one or two messages are likely probes/noise, while larger API-server transcripts should be counted as real context-pressure candidates.
 - Long-running or resumed agent processes can continue to mutate session files even when Miguel is no longer typing in that surface.
 - Honcho memory is the shared long-horizon substrate; Hermes session files are separate conversation transcripts.
 - With `pinPeerName: true`, single-user gateway/runtime surfaces should write under canonical peer `miguel` instead of platform numeric IDs.
