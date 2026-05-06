@@ -165,7 +165,7 @@ python3 /root/.hermes/scripts/donna_memory_health_check.py
 
 ```bash
 python3 -m py_compile /root/.hermes/scripts/donna_session_source_inventory.py
-/root/.hermes/scripts/donna_session_source_inventory.py --hours 12 --limit 50
+python3 /root/.hermes/scripts/donna_session_source_inventory.py --hours 12 --limit 50
 ```
 
 **Expected:**
