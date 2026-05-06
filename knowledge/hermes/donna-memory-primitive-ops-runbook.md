@@ -203,6 +203,32 @@ Do not immediately merge/delete it. Safer next options are:
 2. Alias/recall bridge: teach recall to consider the historical transport peer as related evidence without rewriting DB history.
 3. Planned migration: if still necessary, perform a fully backed up DB migration with a dry run, diff report, and rollback test.
 
+## Surface/session model
+
+Open browser/UI surfaces are not one single live conversation by default.
+
+Observed surfaces can include:
+
+- CLI/TUI sessions
+- Hermes WebUI sessions
+- Open WebUI API-server sessions
+- gateway sessions such as Telegram
+- background/resumed Hermes processes
+
+Each surface normally writes its own Hermes session file, for example with sources such as `cli`, `tui`, `webui`, or `api_server`. They share the same backing memory configuration only when they are pointed at the same Hermes home/Honcho workspace/peer mapping.
+
+Operational interpretation:
+
+- A tab merely being open should not be treated as Miguel actively conversing.
+- A UI can still create lightweight API-server sessions for health/model/chat probes.
+- Long-running or resumed agent processes can continue to mutate session files even when Miguel is no longer typing in that surface.
+- Honcho memory is the shared long-horizon substrate; Hermes session files are separate conversation transcripts.
+- With `pinPeerName: true`, single-user gateway/runtime surfaces should write under canonical peer `miguel` instead of platform numeric IDs.
+
+Primitive lesson:
+
+- Session pressure and memory pressure are related but different. Multiple open surfaces can create many session files or API probes, while long-horizon memory remains shared through Honcho. Diagnose by listing recent session files and their `source` fields before blaming the memory backend.
+
 ## Context compression interpretation
 
 Frequent preflight compression means the current agent context package is heavy.
