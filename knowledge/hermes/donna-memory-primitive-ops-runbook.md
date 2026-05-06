@@ -201,7 +201,7 @@ Do not immediately merge/delete it. Safer next options are:
 
 1. Canary verification: create or observe one new gateway memory write and confirm it lands under `miguel`, not `8246962767`.
 2. Alias/recall bridge: teach recall to consider the historical transport peer as related evidence without rewriting DB history.
-3. Planned migration: if still necessary, perform a fully backed up DB migration with a dry run, diff report, and rollback test.
+3. Planned migration: if still necessary, perform a fully-backed-up DB migration with a dry run, diff report, and rollback test.
 
 ## Surface/session model
 

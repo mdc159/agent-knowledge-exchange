@@ -122,7 +122,7 @@ gh pr view 29 --json number,state,mergeable,url,headRefName,baseRefName --jq .
 
 ```bash
 python3 -m py_compile /root/.hermes/scripts/donna_memory_health_check.py
-/root/.hermes/scripts/donna_memory_health_check.py
+python3 /root/.hermes/scripts/donna_memory_health_check.py
 ```
 
 **Expected:**
@@ -154,7 +154,7 @@ python3 -m py_compile /root/.hermes/scripts/donna_memory_health_check.py
   - source
   - message count
   - role counts
-  - whether file looks like API probe: `source == api_server` and `message_count <= 2`
+  - whether file looks like API probe: `source == 'api_server'` and `message_count <= 2`
 - Summarize counts by source.
 - Summarize largest files.
 - Summarize files modified in the last N hours, default 12.
