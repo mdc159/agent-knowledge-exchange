@@ -10,3 +10,4 @@ Durable operating notes and proposals for Hermes Agent runtimes.
 - [Empire Visibility Communications Plan v0](empire-communications-plane-v0.md)
 - [Empire Current Structure Overview](empire-current-structure-overview.md)
 - [Donna Memory Primitive Operations Runbook](donna-memory-primitive-ops-runbook.md)
+- [Donna Memory Next-Session Execution Plan](donna-memory-next-session-plan.md)
