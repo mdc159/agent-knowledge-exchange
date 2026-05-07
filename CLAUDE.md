@@ -21,13 +21,13 @@ The non-negotiables to keep top-of-mind every turn:
 - **Never merge your own PR.** **Never apply the `automerge` label** — only a human operator does that.
 - Stop in one of three states: PR opened with validation notes, draft PR with blockers listed, or a no-code status comment explaining why the issue cannot proceed.
 
+The PR template at `.github/pull_request_template.md` is the source of truth for what a PR must include (Linear link, validation commands, Vercel preview, auto-merge eligibility, secrets confirmation, restore notes for backup PRs). Fill it; don't replace it.
+
+CI is light: `.github/workflows/repo-hygiene.yml` rejects secret-like filenames and validates issue template YAML on every PR. There is no build or unit test step — the validation commands you list in the PR description *are* the validation.
+
 ## Hard rules — never commit
 
-- `.env` files, API keys, OAuth tokens, provider auth exports
-- raw session DBs, raw memory dumps, full caches, large logs
-- transient runtime state of any kind
-
-`.gitignore` blocks the obvious cases. The rule still applies to anything pasted into a markdown file.
+`.gitignore` and the repo-hygiene workflow block the obvious cases (`.env*`, `auth.json`, OAuth token filenames, raw session DBs, caches, logs). The same prohibition applies to anything **pasted into a markdown file** — auth tokens in a playbook, raw memory dumps in research notes, provider exports in a backup summary. If a snapshot can't be safely shared, summarize it instead.
 
 ## Read before write
 
