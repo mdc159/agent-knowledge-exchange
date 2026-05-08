@@ -73,14 +73,19 @@ Victoria should use her own Hermes setup, credentials, memory/profile config, an
 
 ## Phase 1 Acceptance Criteria
 
-Victoria's implementation is successful when all of the following are true:
+Victoria's implementation is successful when the merge-blocking setup work is complete and any environment-specific checks are explicitly tracked. Do not treat an unverified iPad/Moshi client path as implicitly working; assume it is **not verified** until Miguel/Donna confirms it from the actual outside client. If that pending client check is the only open item, it should be tracked as post-merge validation rather than blocking this documentation/setup PR.
+
+### Merge-blocking setup criteria
 
 - [x] Donna can authenticate to Victoria using the dedicated `victoria` SSH alias.
 - [x] A read-only readiness probe reports hostname, user, tmux path/version, Hermes path/version, and existing tmux sessions without exposing secrets.
 - [x] Victoria has a tmux session dedicated to Hermes work, using a persona-labeled session/window name.
-- [ ] Donna can connect to Victoria through SSH and attach/read the tmux session from an iPad-suitable terminal flow. Pending final outside/iPad validation using `ssh victoria -t victoria-attach`.
 - [x] Victoria documents exact commands run, verification output summaries, and any blockers back to Linear/GitHub.
 - [x] No secrets or raw runtime state are committed, pasted, or copied into the repo.
+
+### Post-merge validation
+
+- [ ] Miguel/Donna should confirm the iPad-suitable outside attach path using Moshi or another iPad SSH client. Until confirmed, this path is assumed **not verified** and should be checked later with `ssh victoria -t victoria-attach` or the equivalent Moshi profile startup command.
 
 ## Victoria Phase 1 Execution Report
 
