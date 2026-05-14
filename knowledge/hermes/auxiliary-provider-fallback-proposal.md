@@ -314,3 +314,76 @@ Adopt this repository convention:
 - For Hermes instances with active Nous Portal credentials, avoid OpenRouter-only auxiliary routing unless OpenRouter is explicitly required.
 
 This keeps the agent useful under partial credential failure while preserving authority boundaries for inner/company-scoped Hermes runtimes.
+
+## 2026-05-14 addendum: GPT-first model preferences with `auto` providers
+
+The baseline above intentionally recommends empty model values for broad portability.
+For operator nodes with known working GPT/OpenAI-Codex lanes, a more specific policy
+can be better:
+
+- keep `provider: auto` so the auxiliary call can still use Hermes' normal
+  resolution and eligible fallback behavior
+- set `model: gpt-*` to express the preferred GPT lane for that task
+- reserve explicit non-`auto` providers for authority, cost, compliance, or
+  capability constraints
+
+This distinction matters because `provider: openai-codex` is a hard provider
+constraint, while `provider: auto` with `model: gpt-5.4-mini` still leaves the
+router room to use the main runtime and fallback chain.
+
+Suggested GPT-first operator profile:
+
+```yaml
+auxiliary:
+  title_generation:
+    provider: auto
+    model: gpt-5.4-mini
+  compression:
+    provider: auto
+    model: gpt-5.4-mini
+  session_search:
+    provider: auto
+    model: gpt-5.4-mini
+  web_extract:
+    provider: auto
+    model: gpt-5.4-mini
+  skills_hub:
+    provider: auto
+    model: gpt-5.4-mini
+  approval:
+    provider: auto
+    model: gpt-5.4-mini
+  mcp:
+    provider: auto
+    model: gpt-5.4-mini
+  triage_specifier:
+    provider: auto
+    model: gpt-5.4
+  curator:
+    provider: auto
+    model: gpt-5.4
+  vision:
+    provider: auto
+    model: gpt-5.5
+```
+
+Validate with the Hermes launcher interpreter, not arbitrary system Python:
+
+```bash
+HERMES_PY=$(head -1 "$(which hermes)" | sed 's/^#!//')
+"$HERMES_PY" - <<'PY'
+from agent.auxiliary_client import call_llm, extract_content_or_reasoning
+resp = call_llm(
+    task="title_generation",
+    messages=[{"role": "user", "content": "Reply with exactly: ok"}],
+    temperature=0,
+    max_tokens=10,
+)
+print(extract_content_or_reasoning(resp))
+PY
+```
+
+Related operational note and reusable skill:
+
+- `knowledge/hermes/browser-tools-and-aux-model-routing.md`
+- `skills/hermes/browser-and-aux-model-routing/SKILL.md`
