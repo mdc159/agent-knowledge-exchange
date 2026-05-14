@@ -4,6 +4,7 @@ Durable operating notes and proposals for Hermes Agent runtimes.
 
 - [Outer vs Inner Hermes](outer-vs-inner-hermes.md)
 - [Auxiliary Provider Fallback Proposal](auxiliary-provider-fallback-proposal.md)
+- [Hermes Browser Tools and Auxiliary Model Routing Notes](browser-tools-and-aux-model-routing.md)
 - [agent-os `.claude` Component Findings for Hermes/Nikoli](agent-os-claude-component-findings.md)
 - [Telegram Agent Communication Plan](telegram-agent-communication-plan.md)
 - [Victoria Hermes Grid Phase 1 Handoff Plan](victoria-hermes-grid-phase-1.md)
