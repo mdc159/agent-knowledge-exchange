@@ -16,3 +16,6 @@ Durable operating notes and proposals for Hermes Agent runtimes.
 - [Empire Current Structure Overview](empire-current-structure-overview.md)
 - [Donna Memory Primitive Operations Runbook](donna-memory-primitive-ops-runbook.md)
 - [Donna Memory Next-Session Execution Plan](donna-memory-next-session-plan.md)
+- [Caboose Phase Documentation Pattern](caboose-phase-documentation-pattern.md)
+- [Open Questions for Follow-Up Research Agents — 2026-05-17](open-questions-for-research-agents-2026-05-17.md)
+- [ComfyUI / RunPod Template Resolution Notes](comfyui-runpod-template-resolution-notes.md)
