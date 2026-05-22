@@ -40,8 +40,9 @@ This note captures unresolved questions from the Caboose documentation, CAD/FEA 
    - Evidence target: reproduce with pinned SHA, prompt, generated STEP, independent CAD review screenshots, and validation JSON.
 
 2. **Benchmark A solver loop**
-   - What is the smallest fully local proof loop for CAD -> independent geometry check -> mesh -> CalculiX -> result JSON -> geometry revision?
-   - Evidence target: one reproducible run with paths, commands, versions, and expected analytical comparison.
+   - Partly answered by the 2026-05-21 local smoke: Gmsh CLI -> CalculiX produced STEP, `.msh`, `.inp`, `.frd`, and a summary JSON without cloud APIs or licensed tools. See `knowledge/research/CAD-FEA Local Solver Loop Progress 2026-05-21.md`.
+   - Remaining question: what is the smallest fully local proof loop that includes faithful Benchmark A geometry, independent geometry check, robust named boundaries, parsed displacement/stress extrema, and a geometry-revision step?
+   - Evidence target: one reproducible run with paths, commands, versions, parsed result extrema, and expected analytical comparison.
 
 3. **FreeCAD/CalculiX lane**
    - What is the lowest-friction local install path on this WSL/Windows workstation, and should execution happen in WSL, Windows, or a VM?
