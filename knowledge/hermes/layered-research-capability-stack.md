@@ -157,3 +157,7 @@ setups.
 Limitations: exact provider availability is profile-specific. A public pack
 must not claim a backend is live on another machine until that machine's
 read-only health checks pass.
+
+## Related skill
+
+Operational routing guidance lives in `skills/hermes/research-capability-routing/SKILL.md`.
