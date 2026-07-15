@@ -1,0 +1,139 @@
+# Secret-free Hermes fleet inventory.
+# Service facts are carried from an earlier verified handoff; connectivity was
+# revalidated from 9530 on 2026-07-15.
+
+snapshot:
+  captured_at: "2026-07-15"
+  source_host: "9530"
+  method: "tailscale status, quick TCP checks, prior read-only SSH inventory"
+  secrets_included: false
+
+nodes:
+  "9530":
+    platform: windows
+    tailscale_dns: "9530.tailfedd3b.ts.net"
+    tailscale_ips: ["100.104.162.40"]
+    tailscale_online: true
+    identity: user-owned
+    roles: [human-controller, gpu-worker, cad-worker, local-development]
+    management: local
+
+  donna:
+    platform: linux
+    tailscale_dns: "donna.tailfedd3b.ts.net"
+    tailscale_ips: ["100.87.24.49"]
+    tailscale_online: true
+    current_identity: user-owned
+    proposed_identity: "tag:fleet-coordinator"
+    roles: [coordinator, application-host, container-host, observability-host, object-storage]
+    management: "TCP 22 open; prior root SSH from 9530 and CBase verified"
+    provider:
+      name: hostinger
+      virtual_machine_id: 1233482
+      plan: "KVM 8"
+      hostname: "srv1233482.hstgr.cloud"
+      public_ipv4: "148.230.95.154"
+      state: running
+    containers:
+      running_at_prior_inventory: 22
+      compose_projects: [1215-prototype-local, gbrain-donna, hermes-webui, honcho]
+      notable_services: [portainer, minio, langfuse, qdrant, neo4j, clickhouse, n8n, open-webui, comfyui, honcho, gbrain, postgres, redis, valkey]
+
+  kvm4:
+    platform: linux
+    tailscale_dns: "kvm-4.tailfedd3b.ts.net"
+    tailscale_ips: ["100.84.200.95"]
+    tailscale_online: true
+    current_identity: user-owned
+    proposed_identity: "tag:fleet-recovery"
+    roles: [reference-vps-deployment, recovery-controller, container-host, donna-repair, object-storage]
+    management: "TCP 22 open; prior root SSH from 9530 verified"
+    provider:
+      name: hostinger
+      virtual_machine_id: 1264451
+      plan: "KVM 4"
+      hostname: "srv1264451.hstgr.cloud"
+      public_ipv4: "191.101.0.164"
+      state: running
+    containers:
+      running_at_prior_inventory: 14
+      compose_projects: [1215-prototype-local]
+      notable_services: [minio, langfuse, qdrant, neo4j, clickhouse, n8n, open-webui, comfyui, postgres, valkey]
+    observations:
+      - "Reference deployment for future VPS convergence."
+      - "Windows alias cbass incorrectly points to this node's public IP."
+
+  victoria:
+    platform: linux
+    tailscale_dns: "victoria.tailfedd3b.ts.net"
+    tailscale_ips: ["100.112.150.24"]
+    tailscale_online: true
+    current_identity: "tag:mdc"
+    proposed_identity: "tag:fleet-worker"
+    roles: [continuous-agent-worker, vps]
+    management: "TCP 22 open; SSH authentication from 9530 unresolved"
+    provider:
+      name: hostinger
+      virtual_machine_id: 1577919
+      plan: "KVM 2"
+      hostname: "paper.hermes.cloud"
+      public_ipv4: "2.24.31.98"
+      state: running
+    agents: unknown
+    containers: unknown
+    constraints:
+      - "Do not reinstall or erase; preserve disk and agent data."
+
+  cbase:
+    platform: macos
+    tailscale_dns: "cbass.tailfedd3b.ts.net"
+    tailscale_ips: ["100.89.156.30"]
+    tailscale_online: true
+    identity: user-owned
+    roles: [personal-desktop, automation-worker, local-llm-candidate]
+    management: "Prior SSH from 9530 verified as seabass"
+
+  m6800:
+    platform: linux
+    tailscale_dns: "m6800.tailfedd3b.ts.net"
+    tailscale_ips: ["100.91.93.24"]
+    tailscale_online: true
+    identity: user-owned
+    roles: [linux-workstation, opportunistic-worker]
+    management: "Tailscale reachable; TCP 22 actively refused on 2026-07-15"
+
+  samantha:
+    platform: android-termux
+    tailscale_dns: "samantha.tailfedd3b.ts.net"
+    tailscale_ips: ["100.83.211.53"]
+    tailscale_online: true
+    identity: user-owned
+    roles: [experimental-phone-agent, operator-endpoint]
+    management: "Prior Termux SSH from 9530 verified on port 8022"
+
+  taco-rosa:
+    platform: ios
+    tailscale_dns: "taco-rosa.tailfedd3b.ts.net"
+    tailscale_ips: ["100.101.48.30"]
+    tailscale_online: true
+    identity: user-owned
+    roles: [personal-mobile-endpoint]
+
+  nicolai:
+    platform: linux-wsl
+    tailscale_dns: "nicolai.tailfedd3b.ts.net"
+    tailscale_ips: ["100.110.111.7"]
+    tailscale_online: false
+    identity: user-owned
+    roles: [wsl-worker]
+    management: "Offline; pending reinventory"
+
+inventory_gaps:
+  - "Fresh read-only Hostinger VM, data-center, backup, firewall, and recovery inventory."
+  - "Restore Victoria authentication and inventory its services without data loss."
+  - "Enable a safe SSH management path on M6800."
+  - "Correct the misleading Windows cbass SSH alias."
+  - "Inspect Donna Portainer endpoint coverage."
+  - "Inventory MinIO retention, consumers, and replication without exporting credentials."
+  - "Determine whether Donna and KVM4 Langfuse deployments duplicate telemetry."
+  - "Reinventory Nicolai after it returns online."

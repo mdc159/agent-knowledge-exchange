@@ -1,0 +1,34 @@
+// REVIEW ONLY -- this file is not confirmed as the live tailnet policy.
+// Preview the exact diff in the Tailscale admin console before any save.
+// Preserve a separately verified provider/public recovery path.
+{
+  "tagOwners": {
+    "tag:mdc": ["autogroup:admin"]
+  },
+  "grants": [
+    {
+      "src": ["autogroup:member"],
+      "dst": ["autogroup:self"],
+      "ip": ["*"]
+    },
+    {
+      "src": ["autogroup:member"],
+      "dst": ["tag:mdc"],
+      "ip": ["*"]
+    }
+  ],
+  "ssh": [
+    {
+      "action": "check",
+      "src": ["autogroup:member"],
+      "dst": ["autogroup:self"],
+      "users": ["autogroup:nonroot", "root"]
+    },
+    {
+      "action": "check",
+      "src": ["autogroup:member"],
+      "dst": ["tag:mdc"],
+      "users": ["root"]
+    }
+  ]
+}
