@@ -1,6 +1,6 @@
 # Secret-free Hermes fleet inventory.
-# Service facts are carried from an earlier verified handoff; connectivity was
-# revalidated from 9530 on 2026-07-15.
+# Provider, connectivity, and service facts were revalidated from 9530 on
+# 2026-07-15. No secret values or raw provider responses are stored here.
 
 snapshot:
   captured_at: "2026-07-15"
@@ -30,10 +30,17 @@ nodes:
     provider:
       name: hostinger
       virtual_machine_id: 1233482
+      data_center_id: 17
+      data_center: "Boston, US (bos)"
       plan: "KVM 8"
       hostname: "srv1233482.hstgr.cloud"
       public_ipv4: "148.230.95.154"
       state: running
+      actions_lock: unlocked
+      firewall_group_id: null
+      latest_backups:
+        - "2026-06-28T07:06:36Z"
+        - "2026-06-21T09:04:44Z"
     containers:
       running_at_prior_inventory: 22
       compose_projects: [1215-prototype-local, gbrain-donna, hermes-webui, honcho]
@@ -51,10 +58,17 @@ nodes:
     provider:
       name: hostinger
       virtual_machine_id: 1264451
+      data_center_id: 9
+      data_center: "legacy/unresolved; absent from current data-center list"
       plan: "KVM 4"
       hostname: "srv1264451.hstgr.cloud"
       public_ipv4: "191.101.0.164"
       state: running
+      actions_lock: unlocked
+      firewall_group_id: null
+      latest_backups:
+        - "2026-07-10T12:42:10Z"
+        - "2026-07-03T09:49:40Z"
     containers:
       running_at_prior_inventory: 14
       compose_projects: [1215-prototype-local]
@@ -71,16 +85,36 @@ nodes:
     current_identity: "tag:mdc"
     proposed_identity: "tag:fleet-worker"
     roles: [continuous-agent-worker, vps]
-    management: "TCP 22 open; SSH authentication from 9530 unresolved"
+    management: "Working public SSH as ubuntu with 9530 id_ed25519; passwordless sudo verified"
     provider:
       name: hostinger
       virtual_machine_id: 1577919
+      data_center_id: 24
+      data_center: "Boston 2, US (bos2)"
       plan: "KVM 2"
       hostname: "paper.hermes.cloud"
       public_ipv4: "2.24.31.98"
       state: running
-    agents: unknown
-    containers: unknown
+      actions_lock: unlocked
+      firewall_group_id: null
+      latest_backups:
+        - "2026-07-11T05:24:47Z"
+        - "2026-07-04T04:47:03Z"
+    resources:
+      memory_gb: 8
+      root_disk_gb: 96
+      root_disk_used_percent: 40
+    agents:
+      codex: "0.128.0"
+      node: "22.22.2"
+      hermes: absent_from_path
+    containers:
+      running: 6
+      compose_projects: [honcho]
+      notable_services: [honcho-api, honcho-deriver, postgres, redis, paperclip-db, portainer-docker-relay]
+    network:
+      tailscale_ssh: false
+      docker_relay: "100.112.150.24:2375; unauthenticated Docker API, tailnet-only"
     constraints:
       - "Do not reinstall or erase; preserve disk and agent data."
 
@@ -100,7 +134,7 @@ nodes:
     tailscale_online: true
     identity: user-owned
     roles: [linux-workstation, opportunistic-worker]
-    management: "Tailscale reachable; TCP 22 actively refused on 2026-07-15"
+    management: "Direct Tailscale ping succeeds in 5 ms; conventional and Tailscale-wrapped SSH both fail because TCP 22 is actively refused"
 
   samantha:
     platform: android-termux
@@ -129,11 +163,10 @@ nodes:
     management: "Offline; pending reinventory"
 
 inventory_gaps:
-  - "Fresh read-only Hostinger VM, data-center, backup, firewall, and recovery inventory."
-  - "Restore Victoria authentication and inventory its services without data loss."
   - "Enable a safe SSH management path on M6800."
-  - "Correct the misleading Windows cbass SSH alias."
-  - "Inspect Donna Portainer endpoint coverage."
-  - "Inventory MinIO retention, consumers, and replication without exporting credentials."
-  - "Determine whether Donna and KVM4 Langfuse deployments duplicate telemetry."
+  - "Preview and validate Tailscale policy before enabling Victoria Tailscale SSH."
+  - "Restrict Victoria's tailnet Docker relay to intended Portainer/controller identities."
+  - "Inspect authenticated Donna Portainer endpoint records without exporting credentials."
+  - "Choose whether Donna and KVM4's independent MinIO and Langfuse stacks should replicate or converge."
+  - "Resolve legacy Hostinger data_center_id 9 to a named region."
   - "Reinventory Nicolai after it returns online."

@@ -119,8 +119,9 @@ must never be included.
 
 ## Preconditions
 
-1. Restore management visibility into Victoria and M6800.
-2. Capture fresh read-only Hostinger provider state.
-3. Inspect existing Portainer, MinIO, and Langfuse coverage.
+1. Restore management visibility into M6800.
+2. Restrict Victoria's tailnet Docker relay to intended controllers.
+3. Inspect authenticated Portainer endpoint coverage and choose whether the
+   independent Donna/KVM4 MinIO and Langfuse stacks should converge.
 4. Implement a repeatable, secret-free inventory collector.
 5. Only then design and test tag migration and live policy changes.

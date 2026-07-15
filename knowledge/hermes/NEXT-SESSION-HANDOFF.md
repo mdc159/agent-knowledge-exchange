@@ -56,46 +56,55 @@ The current agent is running natively in Windows PowerShell on
 | Taco Rosa | `100.101.48.30` | online | personal endpoint |
 | Nicolai | `100.110.111.7` | offline | pending reinventory |
 
-The Windows SSH alias `cbass` currently resolves to KVM4's public IP
-`191.101.0.164` as `root`. It is misleading and must be corrected only after
-the intended CBase alias and identity are confirmed.
+The Windows SSH alias collision was corrected after validating both targets:
+`cbass` and `cbase` now resolve to the Mac as `seabass`, while `kvm4` resolves
+to the recovery VPS as `root` through Tailscale SSH.
 
-## Hostinger access
+## Progress completed after recovery
 
-Windows-side configuration was verified on 2026-07-15:
+Windows-side Hostinger access was verified end-to-end on 2026-07-15:
 
 - `codex mcp get hostinger-vps` reports the server enabled.
 - The launcher exists at
   `C:\Users\Mike\.codex\scripts\hostinger-vps-mcp.ps1`.
 - `HOSTINGER_API_TOKEN` is available to the Windows environment; its value was
   not read or recorded.
-- The active conversation's tool manifest does not expose Hostinger VPS
-  methods directly. That is a task/tool-exposure limitation, not evidence that
-  the Windows configuration or token is missing.
+- The local Hostinger MCP registered 62 tools and successfully executed the
+  GET-only VM, data-center, firewall, backup, snapshot, action-history, and
+  public-key inventory methods.
+- All three VPSs are running and unlocked. No Hostinger firewall groups exist
+  or are attached to the VPSs.
+- Each VPS has two current recoverable backups. Victoria's newest backup is
+  from 2026-07-11.
 
-Provider data carried forward from earlier verified inspection is recorded in
-the inventory, but backup, firewall, data-center, and recovery-option details
-still require a fresh read-only provider inventory.
+Victoria access was restored without provider recovery mode or any remote
+mutation. The existing 9530 key works as `ubuntu`; the old `root` plus
+`paperhermes` key assumption was wrong. `ubuntu` has non-interactive sudo.
+Victoria currently runs Codex, Honcho, Postgres, Redis, and a tailnet-only
+Portainer Docker relay. Tailscale SSH is disabled.
+
+The Windows SSH config was backed up and corrected. Literal `ssh cbass`,
+`ssh kvm4`, `ssh paperhermes`, and `ssh victoria` commands now resolve to and
+successfully authenticate with their intended systems.
 
 ## Ordered next actions
 
-1. Make a read-only Hostinger VM list call from a task or approved local path
-   that exposes the configured server.
-2. Capture data-center names, backup state, firewall configuration, and
-   recovery options for Donna, KVM4, and Victoria.
-3. Restore Victoria authentication using the least disruptive provider console
-   or recovery option. Preserve its disk, agents, and data.
-4. Once connected to Victoria, inventory users, `authorized_keys`, agents,
-   containers, storage, and services; then establish a tested management path.
-5. Preview the minimal Tailscale policy diff before applying any rule for
+1. Preview the minimal Tailscale policy diff before applying any rule for
    `tag:mdc`; verify 9530 and CBase retain access.
-6. At M6800's physical console, enable/start OpenSSH or deliberately configure
+2. Decide whether to enable Tailscale SSH on Victoria. Preserve the working
+   public `ubuntu` recovery path until the tailnet path is tested.
+3. Review the unauthenticated Docker relay on Victoria at tailnet port 2375.
+   It is not public, but any allowed tailnet client can control Docker through
+   it; restrict access to the actual Portainer/controller identities.
+4. At M6800's physical console, enable/start OpenSSH or deliberately configure
    Tailscale SSH, then validate inbound and outbound administration paths.
-7. Correct ambiguous SSH aliases, especially `cbass`.
-8. Inspect Donna's Portainer environments, both MinIO deployments, and the
-   Donna/KVM4 Langfuse deployments before adding duplicate infrastructure.
-9. Reinventory Nicolai after it returns online.
-10. Build the live dashboard only after the access and inventory gaps close.
+5. Treat Donna and KVM4's full `1215-prototype-local` stacks as independent
+   deployments until an explicit replication/convergence design is chosen.
+6. Inspect Donna's authenticated Portainer endpoint records without exporting
+   credentials.
+7. Reinventory Nicolai after it returns online.
+8. Build the live dashboard only after the remaining access and policy gaps
+   close.
 
 ## Safety boundaries
 
