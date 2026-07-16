@@ -2,6 +2,12 @@
 
 Durable operating notes and proposals for Hermes Agent runtimes.
 
+- [Fleet Configuration Handoff](NEXT-SESSION-HANDOFF.md)
+- [Fleet Inventory](fleet-inventory.yaml)
+- [Fleet Dashboard Blueprint](fleet-dashboard-blueprint.md)
+- [Proposed Tailscale Policy](tailscale-policy.hujson)
+- [Tailscale Agent Fleet Connectivity Proposal](tailscale-agent-fleet-proposal.md)
+
 - [Outer vs Inner Hermes](outer-vs-inner-hermes.md)
 - [Auxiliary Provider Fallback Proposal](auxiliary-provider-fallback-proposal.md)
 - [Hermes Browser Tools and Auxiliary Model Routing Notes](browser-tools-and-aux-model-routing.md)
