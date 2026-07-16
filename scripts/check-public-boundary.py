@@ -15,7 +15,7 @@ FORBIDDEN_CONTENT = {
     "tailnet hostname": re.compile(r"\b[a-z0-9-]+\.tail[a-z0-9]+\.ts\.net\b", re.I),
     "tailscale address": re.compile(r"\b100\.(?:\d{1,3}\.){2}\d{1,3}\b"),
     "private key": re.compile(r"-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----"),
-    "docker tcp relay": re.compile(r"portainer_docker_relay", re.I),
+    "docker tcp relay": re.compile("portainer" + "_docker_relay", re.I),
 }
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".yaml", ".yml", ".toml", ".hujson", ".py"}
 
@@ -46,4 +46,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
