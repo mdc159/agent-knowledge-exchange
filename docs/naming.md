@@ -1,45 +1,15 @@
 # Naming
 
-## Files
+Use descriptive, reusable names that do not identify a real operator, machine,
+tailnet, provider account, or agent persona.
 
-- knowledge docs: `kebab-case.md`
-- skill folders: `kebab-case/`
-- agent profiles: `<agent-name>.md`
-- backups: `YYYY-MM-DD-short-milestone`
+- skills: `skills/<domain>/<verb-noun>/SKILL.md`
+- knowledge: `knowledge/<domain>/<topic>.md`
+- templates: `agents/templates/<purpose>-template.md`
+- research: `knowledge/research/<topic>.md`
 
-## Paths
+Public examples use `agent-a`, `node-a`, `example.ts.net`, `example.invalid`,
+and reserved documentation networks such as `192.0.2.0/24`.
 
-- `knowledge/<domain>/<topic>.md`
-- `skills/<scope>/<skill-name>/SKILL.md`
-- `agents/profiles/<agent-name>.md`
-- `backups/agents/<agent-name>/<date>-<milestone>/`
-
-## Labels
-
-Use these labels consistently:
-
-- `knowledge`
-- `skill`
-- `research`
-- `backup`
-- `question`
-- `paperclip`
-- `hermes`
-- `n8n`
-- `ops`
-- `needs-review`
-- `agent-work`
-- `copilot`
-- `codex`
-- `human-review`
-- `blocked`
-- `needs-preview`
-- `low-risk`
-- `automerge`
-- `no-automerge`
-
-## Branches and Pull Requests
-
-- Linear-backed branch: `121-123-short-slug`
-- Exploratory branch before Linear issue exists: `ops-short-slug`
-- PR title: `[121-123] Short outcome`
+Keep real node manifests, fleet inventories, named profiles, and snapshot paths
+in a private or local repository.

@@ -34,3 +34,11 @@ jobs:
         run: |
           set -euo pipefail
           ruby -e 'require "yaml"; Dir[".github/ISSUE_TEMPLATE/*.yml"].each { |f| YAML.load_file(f) }'
+
+      - name: Enforce public repository boundary
+        run: python scripts/check-public-boundary.py
+
+      - name: Scan for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

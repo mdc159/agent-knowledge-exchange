@@ -6,7 +6,7 @@ This repo is the shared exchange for:
 
 - durable operational knowledge
 - portable skills
-- curated agent-definition backups
+- generic agent-definition templates
 - issue and PR based coordination
 - agent-operable GitHub and Linear workflow standards
 
@@ -20,9 +20,8 @@ it probably does not belong here.
 - research summaries
 - troubleshooting notes
 - curated skill definitions
-- agent manifests and templates
-- milestone backup snapshots
-- restore notes
+- generic agent templates
+- sanitized restore patterns
 
 ## What Must Never Be Committed
 
@@ -34,6 +33,8 @@ it probably does not belong here.
 - full cache trees
 - large transient logs
 - anything whose only value is machine residue
+- fleet inventories, node manifests, access maps, or live handoffs
+- named operator or agent profiles and milestone snapshots
 
 ## Contribution Rules
 
@@ -44,13 +45,12 @@ it probably does not belong here.
 5. If a procedure repeats and works, promote it into a skill or knowledge doc.
 6. Follow `docs/agent-operating-procedure.md` for planned agent work.
 
-## Backup Rules
+## Backup Guidance
 
-- snapshot on milestones, not continuously
-- include only the files needed to reconstruct the agent definition and the
-  reasoning needed to restore it
-- accompany every backup snapshot with restore notes
-- if a snapshot cannot be safely shared, summarize it instead of committing it
+- keep real snapshots in a private system
+- publish only generic backup and restore patterns
+- replace real identities, addresses, and paths with fictional examples
+- summarize the reusable lesson instead of committing runtime state
 
 ## Review Standard
 

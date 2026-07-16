@@ -1,60 +1,22 @@
-# Backup Policy
+# Public Backup and Restore Guidance
 
-## Goal
+This public repository documents reusable backup and restore patterns. It does
+not store real agent snapshots.
 
-Backups in this repo are for restoring agent definition and operator intent,
-not for mirroring every byte of runtime state.
+## Allowed
 
-## When To Snapshot
+- generic backup checklists
+- fictional example manifests
+- restore validation procedures
+- sanitized postmortem lessons
 
-Take a milestone snapshot:
+## Keep Private
 
-- before risky experimentation
-- after major persona or config changes
-- after a stable, known-good setup
-- before replacing a model, adapter, or memory layout
+- real agent profiles, memory exports, and runtime homes
+- configuration containing provider, host, user, or account identifiers
+- session databases, raw transcripts, logs, and caches
+- credentials, secret references tied to a real vault, and private keys
 
-## What To Include
-
-Usually include:
-
-- `SOUL.md`
-- `AGENTS.md` or equivalent instruction file
-- `config.yaml`
-- `honcho.json`
-- model/provider notes
-- curated memory summary
-- restore notes
-
-## What To Exclude
-
-Do not commit:
-
-- `.env`
-- API keys
-- provider auth exports
-- raw session DBs
-- raw logs
-- caches
-- temporary scratch files
-
-## Snapshot Layout
-
-Use:
-
-`backups/agents/<agent-name>/<YYYY-MM-DD>-<milestone>/`
-
-Each snapshot should contain at least:
-
-- copied or normalized defining files
-- `restore-notes.md`
-- `summary.md`
-
-## Restore Standard
-
-Another operator should be able to answer:
-
-- what files define this agent?
-- what model/provider did it use?
-- what memory/backend assumptions existed?
-- what must be recreated outside git?
+Use placeholders such as `agent-a`, `/srv/example-agent`, and
+`192.0.2.10`. A public example must remain useful when copied into an unrelated
+environment.

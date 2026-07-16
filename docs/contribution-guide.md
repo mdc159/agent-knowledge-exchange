@@ -26,16 +26,16 @@ If the answer already exists, reuse it instead of restating it.
 
 - you are adding or updating knowledge
 - you are promoting a procedure into a skill
-- you are adding a new agent profile or template
-- you are recording a milestone backup snapshot
+- you are adding a generic agent template
+- you are documenting a reusable backup or restore pattern
 - you are changing repo policy, workflow, or agent instructions
 
 ## Where Content Should Go
 
 - `knowledge/...`: explanations, playbooks, troubleshooting notes
 - `skills/...`: reusable markdown/script procedures
-- `agents/profiles/...`: curated description of a primary agent
-- `backups/agents/...`: milestone snapshots
+- `agents/templates/...`: generic agent-definition templates
+- `docs/...`: reusable backup and restore guidance
 
 ## Good Contribution Pattern
 
