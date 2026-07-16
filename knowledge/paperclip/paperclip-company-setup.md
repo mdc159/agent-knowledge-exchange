@@ -5,9 +5,8 @@ live runtime inspection work, and repeated fresh-node `hermes_local` proofs on
 `srv1264451`.
 
 For a quick guide to the Paperclip notes in this directory, see
-[Paperclip Knowledge](README.md). If you are trying to authenticate to an
-existing deployment or diagnose board access problems, use
-[Paperclip Access and CLI Auth](paperclip-access-and-cli-auth.md).
+[Paperclip Knowledge](README.md). Keep deployment authentication and private
+board-access procedures in the operator's private system.
 
 ## What Paperclip Actually Owns
 
@@ -214,4 +213,3 @@ first repair pass:
 See also:
 
 - [Paperclip Knowledge](README.md)
-- [Paperclip Access and CLI Auth](paperclip-access-and-cli-auth.md)
