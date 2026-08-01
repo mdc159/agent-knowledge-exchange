@@ -105,10 +105,18 @@ A reusable builder/verifier dispatch looks like this:
 3. Launch builders in separate HERDR panes or workspaces.
 4. Give verifiers the frozen brief, builder result, and primary evidence. Do not
    give them only the builder's narrative.
-5. Collect structured outputs, timing, failures, and dissent into durable host
+5. End every worker brief with a report-back instruction. After writing its
+   durable output, the worker's final act is to send an explicit completion or
+   blocked message to the orchestrator's session or pane. This message is a
+   doorbell, not proof of completion: the orchestrator verifies the expected
+   file and terminal marker on disk before accepting the route as complete.
+6. Supervise with short waits followed by pane or output reads between
+   doorbells. Never use one long blind wait; a blocked worker needs attention
+   when it blocks, not when a large timeout finally expires.
+7. Collect structured outputs, timing, failures, and dissent into durable host
    records.
-6. Close the live HERDR resources after terminal output is recorded.
-7. Retry from a recorded checkpoint or create a new route; do not silently
+8. Close the live HERDR resources after terminal output is recorded.
+9. Retry from a recorded checkpoint or create a new route; do not silently
    mutate the history of a failed route.
 
 Two builder/verifier combinations that have worked well in reviewed practical
@@ -116,7 +124,7 @@ use are:
 
 | Builder | Verifier | Useful characteristic |
 | --- | --- | --- |
-| GLM 5.2 | Kimi K3 | Heterogeneous cross-check with different model behavior |
+| GLM 5.2 | Kimi K3 | Heterogeneous cross-check; K3 rate-limits under sustained load, so brief it, collect the verdict, and release the seat rather than keeping it as a standing verifier |
 | GLM 5.2 | GPT-5.6 Sol | Strong independent verification for higher-assurance work |
 
 These are operating examples, not universal benchmark conclusions. Record the
@@ -127,6 +135,27 @@ default.
 Parallelism should be bounded by explicit concurrency, time, cost, data-egress,
 and approval policy. The host application decides whether a route is permitted;
 HERDR executes the approved route without becoming a second policy database.
+
+### Provider rate and quota control
+
+Treat an HTTP 429 as a structured control signal, not a generic retry request.
+Read the response body and branch on the provider's documented error code:
+
+- A request-rate limit means stagger dispatches into small concurrency lanes,
+  preserve partial work, and resume those routes with bounded backoff.
+- A usage-window or quota limit means stop all new dispatches to that provider.
+  Keep the affected routes durable and schedule a bounded probe loop for later
+  resumption.
+
+Budget the fleet before launch. `planned dispatch tokens / provider window
+quota` estimates how many runs fit in the current usage window; the remainder
+belongs in a later window rather than in an optimistic burst.
+
+Before resuming a stalled fleet, send a one-shot probe through the same provider
+route. Resume only after that probe succeeds. Do not calculate resumption from a
+reset timestamp parsed as local time: provider timestamps may use the provider's
+timezone or omit enough context to make conversion unsafe. A probe loop is the
+authoritative readiness signal.
 
 ## Durable state and live state
 
