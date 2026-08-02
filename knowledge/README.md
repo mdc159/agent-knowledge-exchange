@@ -4,6 +4,7 @@ The knowledge library contains reusable, sanitized material that does not depend
 on access to a particular operator, fleet, machine, or private service.
 
 - [Hermes](hermes/README.md): runtime patterns and reusable troubleshooting
+- [HERDR](herdr/README.md): isolated runtime ownership and parallel agent execution
 - [Paperclip](paperclip/README.md): generic company and adapter setup
 - [Research](research/README.md): engineering and agent-system research
 - [Open WebUI](open-webui/README.md): generic integration notes
@@ -13,4 +14,3 @@ on access to a particular operator, fleet, machine, or private service.
 
 Use reserved examples such as `node-a`, `example.ts.net`, `192.0.2.0/24`, and
 `example.invalid`. Never substitute real infrastructure identifiers.
-
