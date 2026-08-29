@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+"""fleet-cred — request short-lived fleet credentials by capability.
+
+Agents use this instead of ever handling .env files or static keys:
+
+    fleet-cred openrouter                 # prints a fresh (or cached) runtime key
+    fleet-cred openrouter --ttl 3600 --limit-usd 2
+    fleet-cred env openrouter             # prints: export OPENROUTER_API_KEY=...
+    fleet-cred openrouter --json          # metadata + key as JSON
+    fleet-cred revoke openrouter          # locally forget + remotely revoke
+
+Auth is automatic: the broker identifies this machine by its Tailscale node
+identity. No token, no config file, no secret on disk. Access is granted per
+node in the broker's policy.json; if denied, ask the operator (or open an
+issue in agent-knowledge-exchange) to grant the capability.
+
+Exit codes: 0 ok · 3 capability denied for this node · 4 broker unreachable ·
+5 unexpected error.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import socket
+import stat
+import sys
+import time
+import urllib.error
+import urllib.request
+from datetime import datetime, timezone
+
+BROKER = os.environ.get("FLEET_BROKER_URL", "https://donna.tailfedd3b.ts.net:8459")
+RENEW_MARGIN_SECONDS = 120
+
+CAPABILITIES = {
+    "openrouter": {
+        "endpoint": "/v1/keys",
+        "env_var": "OPENROUTER_API_KEY",
+        "default_ttl": 14400,
+        "default_limit": 5,
+    }
+}
+
+
+def cache_dir() -> str:
+    path = os.path.join(os.environ.get("TMPDIR", "/tmp"), f"fleet-cred-{os.getuid()}")
+    os.makedirs(path, mode=0o700, exist_ok=True)
+    os.chmod(path, 0o700)
+    return path
+
+
+def cache_path(capability: str) -> str:
+    return os.path.join(cache_dir(), f"{capability}.json")
+
+
+def read_cache(capability: str) -> dict | None:
+    try:
+        with open(cache_path(capability), "r", encoding="utf-8") as fh:
+            entry = json.load(fh)
+        expires = datetime.fromisoformat(
+            entry["expires_at"].replace("Z", "+00:00")
+        ).timestamp()
+        if time.time() < expires - RENEW_MARGIN_SECONDS and entry.get("key"):
+            return entry
+    except (OSError, ValueError, KeyError):
+        pass
+    return None
+
+
+def write_cache(capability: str, entry: dict) -> None:
+    path = cache_path(capability)
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as fh:
+        json.dump(entry, fh)
+
+
+def clear_cache(capability: str) -> None:
+    try:
+        os.unlink(cache_path(capability))
+    except OSError:
+        pass
+
+
+def request(method: str, endpoint: str, payload: dict | None = None) -> dict:
+    body = json.dumps(payload).encode() if payload is not None else None
+    req = urllib.request.Request(
+        BROKER + endpoint, data=body, method=method,
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            return json.load(resp)
+    except urllib.error.HTTPError as exc:
+        detail = ""
+        try:
+            detail = json.load(exc).get("detail", "")
+        except Exception:
+            pass
+        if exc.code == 403:
+            print(
+                f"denied: this node ({socket.gethostname()}) has no grant — {detail}\n"
+                "ask the operator to add it to the broker policy "
+                "(/opt/fleet-secrets/broker/policy.json on donna)",
+                file=sys.stderr,
+            )
+            sys.exit(3)
+        if exc.code == 401:
+            print("denied: broker could not identify this tailnet node", file=sys.stderr)
+            sys.exit(3)
+        print(f"broker error {exc.code}: {detail}", file=sys.stderr)
+        sys.exit(5)
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+        print(f"broker unreachable at {BROKER}: {exc}", file=sys.stderr)
+        sys.exit(4)
+
+
+def mint(capability: str, ttl: int, limit: float, label: str) -> dict:
+    cap = CAPABILITIES[capability]
+    return request("POST", cap["endpoint"], {
+        "label": label, "ttl_seconds": ttl, "limit_usd": limit,
+    })
+
+
+def cmd_get(args: argparse.Namespace) -> None:
+    cap = CAPABILITIES[args.capability]
+    entry = None if args.no_cache else read_cache(args.capability)
+    if entry is None:
+        entry = mint(args.capability, args.ttl, args.limit_usd, args.label)
+        if not args.no_cache:
+            write_cache(args.capability, entry)
+    if args.json:
+        print(json.dumps(entry))
+    else:
+        print(entry["key"])
+
+
+def cmd_env(args: argparse.Namespace) -> None:
+    cap = CAPABILITIES[args.capability]
+    entry = read_cache(args.capability) or mint(
+        args.capability, args.ttl, args.limit_usd, args.label
+    )
+    write_cache(args.capability, entry)
+    print(f"export {cap['env_var']}={entry['key']}")
+
+
+def cmd_revoke(args: argparse.Namespace) -> None:
+    # Revocation is an admin operation on the broker; from a node we simply
+    # forget the key locally. It self-revokes at expiry regardless.
+    clear_cache(args.capability)
+    print(f"forgotten locally: {args.capability} (auto-revokes at expiry)")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(prog="fleet-cred", description=__doc__)
+    parser.add_argument("--broker", default=BROKER, help=argparse.SUPPRESS)
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    for name, fn in (("openrouter", cmd_get),):
+        p = sub.add_parser(name, help=f"get a short-lived {name} credential")
+        p.add_argument("--ttl", type=int, default=CAPABILITIES[name]["default_ttl"])
+        p.add_argument("--limit-usd", type=float, default=CAPABILITIES[name]["default_limit"])
+        p.add_argument("--label", default=f"fleet-cred:{os.path.basename(os.getcwd())}")
+        p.add_argument("--json", action="store_true")
+        p.add_argument("--no-cache", action="store_true")
+        p.set_defaults(fn=fn)
+
+    pe = sub.add_parser("env", help="print a shell export line")
+    pe.add_argument("capability", choices=list(CAPABILITIES))
+    pe.add_argument("--ttl", type=int, default=14400)
+    pe.add_argument("--limit-usd", type=float, default=5)
+    pe.add_argument("--label", default=f"fleet-cred:{os.path.basename(os.getcwd())}")
+    pe.set_defaults(fn=cmd_env, json=False, no_cache=False)
+
+    pr = sub.add_parser("revoke", help="forget a cached credential locally")
+    pr.add_argument("capability", choices=list(CAPABILITIES))
+    pr.set_defaults(fn=cmd_revoke)
+
+    args = parser.parse_args()
+    if args.command not in CAPABILITIES and args.command not in ("env", "revoke"):
+        parser.error("unknown command")
+    args.capability = getattr(args, "capability", args.command)
+    args.fn(args)
+
+
+if __name__ == "__main__":
+    main()

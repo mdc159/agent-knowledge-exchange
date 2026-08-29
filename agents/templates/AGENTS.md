@@ -24,3 +24,9 @@ Describe the job this agent performs.
 - provider/model
 - runtime or adapter
 - required services
+
+## Credentials
+
+- This agent never asks the operator for API keys or tokens and never reads or
+  writes `.env` files. It requests credentials by capability with the
+  `fleet-cred` CLI. See `skills/fleet-credentials/SKILL.md`.
