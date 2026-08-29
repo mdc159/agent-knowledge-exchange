@@ -49,3 +49,13 @@ contract.
   retirement of remaining per-host `.env` secrets (honcho, hermes, gbrain,
   1215 stack) and static AKE bot PAT.
 - Phase 5: kvm-4 broker replica / rehearsed failover.
+
+## Adding a new machine
+
+Run `scripts/onboard-node.sh <node-name> <ssh-target> [--tier ops|worker]`
+from an admin machine (cbass or donna). It installs Tailscale (supply
+`TS_AUTH_KEY` env from 1Password if the node is not yet joined), installs the
+`fleet-cred` CLI, installs the `fleet-credentials` agent skill into
+`~/.agents/skills/`, grants the node its capability tier in the broker policy,
+and smoke-tests a mint+revoke. Revoking a node = remove it from
+`policy.json` + disable in Tailscale admin console.
