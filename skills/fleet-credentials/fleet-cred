@@ -20,11 +20,13 @@ Exit codes: 0 ok · 3 capability denied for this node · 4 broker unreachable ·
 from __future__ import annotations
 
 import argparse
+import getpass
 import json
 import os
 import socket
 import stat
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -43,10 +45,20 @@ CAPABILITIES = {
 }
 
 
+def _user_id() -> str:
+    try:
+        return str(os.getuid())
+    except AttributeError:  # Windows
+        return getpass.getuser()
+
+
 def cache_dir() -> str:
-    path = os.path.join(os.environ.get("TMPDIR", "/tmp"), f"fleet-cred-{os.getuid()}")
-    os.makedirs(path, mode=0o700, exist_ok=True)
-    os.chmod(path, 0o700)
+    path = os.path.join(tempfile.gettempdir(), f"fleet-cred-{_user_id()}")
+    os.makedirs(path, exist_ok=True)
+    try:
+        os.chmod(path, 0o700)
+    except OSError:  # Windows: permissions handled by ACLs
+        pass
     return path
 
 
