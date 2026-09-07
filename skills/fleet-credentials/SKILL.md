@@ -63,9 +63,9 @@ node identity — this CLI only works on fleet machines with Tailscale running.
 
 ## Operator reference (humans only)
 
-- Broker: `https://donna.tailfedd3b.ts.net:8459` (tailnet only), code +
+- Broker: `https://broker.example.invalid:8459` (private network example), code +
   policy at `/opt/fleet-secrets/broker/` on donna.
-- Root secrets live in Infisical (`https://donna.tailfedd3b.ts.net:8458`);
+- Root secrets live in Infisical (`https://secrets.example.invalid:8458`);
   recovery copies escrowed in 1Password vault `Fleet Control Plane`.
 - Architecture and rollout plan: project notes "Fleet-Wide Credential
   Architecture & Rollout Plan" (2026-08-29).
