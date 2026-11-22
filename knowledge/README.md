@@ -11,6 +11,7 @@ on access to a particular operator, fleet, machine, or private service.
 - [n8n](n8n/README.md): reusable workflow guidance
 - [Tijuana research](tijuana/): public regional research
 - [Deployment patterns](deployment/): provider-neutral bootstrap guidance
+- [Way of Working](way-of-working/README.md): outcome-directed engineering philosophy, lightweight adoption and a reusable skill (work in progress)
 
 Use reserved examples such as `node-a`, `example.ts.net`, `192.0.2.0/24`, and
 `example.invalid`. Never substitute real infrastructure identifiers.
